@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, Mail, Menu, X } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import { Mail, Phone, ArrowRight } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface PublicNavbarProps {
@@ -20,54 +20,126 @@ const navLinks = [
 ];
 
 export function PublicNavbar({ className }: PublicNavbarProps = {}) {
-  const pathname = usePathname();
+  const [navOpen, setNavOpen] = React.useState(false);
 
   return (
-    <nav
-      className={cn(
-        'sticky top-0 z-40 flex h-16 items-center justify-between px-4 border-b border-input bg-background/80 backdrop-blur-md transition-all',
-        className
-      )}
-    >
-      <Link href="/" className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
-          <span className="text-sm font-bold tracking-tight">C</span>
+    <>
+      <nav
+        className={cn(
+          'sticky top-0 z-40 flex h-16 items-center justify-between px-4 border-b border-input bg-background/80 backdrop-blur-md transition-all',
+          className
+        )}
+      >
+        <Link href="/" className="flex items-center gap-2">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg">
+            <span className="text-sm font-bold tracking-tight">C</span>
+          </div>
+          <span className="font-bold text-xl tracking-tight text-foreground">
+            CivicPulse<span className="text-primary">AI</span>
+          </span>
+        </Link>
+
+        <div className="hidden lg:flex items-center gap-8 text-sm font-medium">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
-        <span className="font-bold text-xl tracking-tight text-foreground">
-          CivicPulse<span className="text-primary">AI</span>
-        </span>
-      </Link>
 
-      <div className="hidden lg:flex items-center gap-8 text-sm font-medium">
-        {navLinks.map((link) => (
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           <Link
-            key={link.name}
-            href={link.href}
-            className={cn(
-              'text-muted-foreground hover:text-primary transition-colors',
-              pathname === link.href && 'text-primary'
-            )}
+            href="/report/new"
+            className="hidden sm:flex items-center justify-center gap-2 h-10 px-5 font-medium shadow-elegant hover:shadow-md transition-all bg-primary text-primary-foreground rounded-xl"
           >
-            {link.name}
+            <ArrowRight className="h-4 w-4" /> Report an Issue
           </Link>
-        ))}
-      </div>
+          <Link
+            href="/login"
+            className="hidden sm:flex items-center justify-center gap-2 h-10 px-5 font-medium rounded-xl border border-input bg-background hover:bg-accent transition-all"
+          >
+            <Mail className="h-4 w-4" /> Login
+          </Link>
+          <button
+            className="lg:hidden rounded-lg p-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+            aria-label="Open menu"
+            onClick={() => setNavOpen(true)}
+          >
+            <span className="sr-only">Open menu</span>
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+      </nav>
 
-      <div className="flex items-center gap-3">
-        <Link
-          href="/report/new"
-          className="hidden sm:flex items-center justify-center gap-2 h-10 px-5 font-medium shadow-elegant hover:shadow-lg transition-all bg-primary text-primary-foreground rounded-lg"
-        >
-          <ArrowRight className="h-4 w-4" /> Report an Issue
-        </Link>
-        <ThemeToggle className="px-4" />
-        <Link
-          href="/login"
-          className="hidden sm:flex items-center justify-center gap-2 h-10 px-5 font-medium rounded-lg border border-input bg-background hover:bg-accent transition-all"
-        >
-          <Mail className="h-4 w-4" /> Login
-        </Link>
-      </div>
-    </nav>
+      <AnimatePresence>
+        {navOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm"
+            onClick={() => setNavOpen(false)}
+          />
+        )}
+        {navOpen && (
+          <motion.div
+            initial={{ translateX: '-100%' }}
+            animate={{ translateX: 0 }}
+            exit={{ translateX: '-100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="fixed inset-y-0 left-0 z-50 w-full sm:max-w-xs bg-card border-r border-input shadow-xl flex flex-col"
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-input">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-elegant">
+                  <span className="text-sm font-bold tracking-tight">C</span>
+                </div>
+                <span className="font-bold text-lg tracking-tight text-foreground">
+                  CivicPulse<span className="text-primary">AI</span>
+                </span>
+              </Link>
+              <button
+                className="rounded-lg p-1.5 hover:bg-accent transition-colors"
+                onClick={() => setNavOpen(false)}
+                aria-label="Close menu"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <nav className="px-6 py-6 space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setNavOpen(false)}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all text-muted-foreground hover:bg-accent hover:text-foreground"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+            <div className="mt-auto px-6 py-8 space-y-3">
+              <Link
+                href="/report/new"
+                className="flex items-center justify-center gap-2 h-11 px-5 font-medium shadow-elegant hover:shadow-md transition-all bg-primary text-primary-foreground rounded-xl w-full"
+              >
+                <ArrowRight className="h-4 w-4" /> Report an Issue
+              </Link>
+              <Link
+                href="/login"
+                className="flex items-center justify-center gap-2 h-11 px-5 font-medium rounded-xl border border-input bg-background hover:bg-accent transition-all w-full"
+              >
+                <Mail className="h-4 w-4" /> Login
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
