@@ -15,8 +15,8 @@ import {
   Menu,
   ChevronRight,
   Bell,
-  MessageCircle,
-  HelpCircle,
+  Settings,
+  Layout,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -28,6 +28,7 @@ interface AdminLayoutProps {
     name: string;
     email: string;
     role: string;
+    avatar?: string;
   };
   onLogout?: () => void;
   className?: string;
@@ -35,12 +36,12 @@ interface AdminLayoutProps {
 }
 
 const adminNavigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: Home },
-  { name: 'Map', href: '/map', icon: MapPin },
-  { name: 'Reports', href: '/reports', icon: FileText },
-  { name: 'Team', href: '/team', icon: Users },
-  { name: 'Admin', href: '/admin', icon: Shield },
-  { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { name: 'Dashboard', href: '/admin/dashboard', icon: Home },
+  { name: 'Issues', href: '/admin/issues', icon: FileText },
+  { name: 'Users', href: '/admin/users', icon: Users },
+  { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+  { name: 'Map', href: '/admin/map', icon: MapPin },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export function AdminLayout({
@@ -55,54 +56,43 @@ export function AdminLayout({
 
   return (
     <div className={cn('min-h-screen bg-background', className)}>
-      <header className="sticky top-0 z-30 flex h-16 items-center justify-between px-4 border-b border-input bg-card shadow-sm">
-        <div className="flex items-center gap-4">
-          <button
-            className="rounded-lg p-1.5 hover:bg-accent transition-colors md:hidden"
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open navigation"
-          >
-            <span className="sr-only">Open navigation</span>
-            <Menu className="h-5 w-5" />
-          </button>
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
-              <span className="text-sm font-bold tracking-tight">C</span>
+      <header
+        key="admin-header"
+        className="sticky top-0 z-30 flex h-16 items-center justify-between px-4 border-b border-input bg-card/80 backdrop-blur-md shadow-sm"
+      >
+            <div className="flex items-center gap-4">
+              <button
+                className="rounded-lg p-1.5 hover:bg-accent transition-colors md:hidden"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open navigation"
+              >
+                <span className="sr-only">Open navigation</span>
+                <Menu className="h-5 w-5" />
+              </button>
+              <Link href="/admin/dashboard" className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
+                  <span className="text-sm font-bold tracking-tight">C</span>
+                </div>
+                <span className="font-bold text-xl tracking-tight text-foreground">
+                  CivicPulse<span className="text-primary">AI</span>
+                </span>
+              </Link>
             </div>
-            <span className="font-bold text-xl tracking-tight text-foreground">
-              CivicPulse<span className="text-primary">AI</span>
-            </span>
-          </Link>
-        </div>
 
-        <div className="relative hidden sm:flex w-[320px] items-center rounded-lg border border-input bg-background px-3 py-2">
-          <input
-            type="search"
-            placeholder="Search reports, users, locations…"
-            className="flex h-8 w-full rounded-lg bg-transparent px-3 py-2 pl-9 text-sm outline-none transition-all placeholder:text-muted-foreground"
-          />
-        </div>
+            <div className="relative hidden sm:flex w-[320px] items-center rounded-lg border border-input bg-background px-3 py-2">
+              <input
+                type="search"
+                placeholder="Search issues, users, locations…"
+                className="flex h-8 w-full rounded-lg bg-transparent px-3 py-2 pl-9 text-sm outline-none transition-all placeholder:text-muted-foreground"
+              />
+            </div>
 
-        <div className="flex items-center gap-2">
-          <div className="lg:hidden">
-            <ThemeToggle showLabel={false} />
-          </div>
-          <NotificationDropdown />
-          <button
-            className="relative rounded-lg p-1.5 hover:bg-accent transition-colors"
-            aria-label="Messages"
-          >
-            <MessageCircle className="h-5 w-5" />
-          </button>
-          <button
-            className="relative rounded-lg p-1.5 hover:bg-accent transition-colors"
-            aria-label="Help"
-          >
-            <HelpCircle className="h-5 w-5" />
-          </button>
-          <UserProfileDropdown user={user} onLogout={onLogout} />
-        </div>
-      </header>
+            <div className="flex items-center gap-2">
+              <ThemeToggle showLabel={false} className="hidden sm:block" />
+              <NotificationDropdown />
+              <UserProfileDropdown user={user} onLogout={onLogout} />
+            </div>
+          </header>
 
       {/* Mobile sidebar sheet */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -168,7 +158,7 @@ export function AdminLayout({
       >
         <div className="flex h-full flex-col">
           <div className="flex h-16 items-center justify-between px-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/admin/dashboard" className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
                 <span className="text-sm font-bold tracking-tight">C</span>
               </div>

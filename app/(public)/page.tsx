@@ -13,6 +13,7 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
+  AlertTriangle,
   Users,
   BarChart3,
   Globe,
@@ -91,7 +92,7 @@ const aiIntelligence = [
   {
     title: "Severity Scoring",
     description: "ML estimates impact so critical issues get attention first.",
-    icon: <AlertTriangleAlt className="h-4 w-4" />,
+    icon: <AlertTriangle className="h-4 w-4" />,
   },
   {
     title: "Bengali Summaries",
@@ -113,25 +114,6 @@ const statCards = [
   { value: "99.8%", label: "AI Categorization Accuracy", icon: Cpu, color: "text-primary" },
   { value: "24/7", label: "Citizen Reporting", icon: Phone, color: "text-success" },
 ];
-
-function AlertTriangleAlt({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-      />
-    </svg>
-  );
-}
 
 export default function LandingPage() {
   return (
@@ -667,5 +649,7 @@ function FeatureRow({
     </div>
   );
 }
+
+
 
 
