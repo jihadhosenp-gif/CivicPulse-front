@@ -49,10 +49,9 @@ export function ReportsTableSkeleton({ rows = 5 }: { rows?: number }) {
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-3 w-1/2" />
           </div>
-          <Skeleton className="h-6 w-24" variant="rectangular" hidden md:block />
-          <Skeleton className="h-6 w-20" variant="rectangular" hidden lg:block />
-          <Skeleton className="h-5 w-20" variant="rectangular" />
-          <Skeleton className="h-5 w-16" variant="rectangular" hidden lg:block />
+<Skeleton className="h-6 w-24 hidden md:block" variant="rectangular" />
+          <Skeleton className="h-6 w-20 hidden lg:block" variant="rectangular" />
+          <Skeleton className="h-5 w-16 hidden lg:block" variant="rectangular" />
           <Skeleton className="h-4 w-20" variant="rectangular" />
           <Skeleton className="h-8 w-8 rounded" />
         </div>
