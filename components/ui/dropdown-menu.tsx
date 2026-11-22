@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, type HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/utils/cn';
 
 /*
@@ -54,18 +54,30 @@ export function DropdownMenu({
   );
 }
 
+interface DropdownMenuTriggerChildProps {
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  className?: string;
+  children?: React.ReactNode;
+  'aria-expanded'?: boolean;
+  'aria-haspopup'?: 'menu';
+}
+
 interface DropdownMenuTriggerProps {
   asChild?: boolean;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 export function DropdownMenuTrigger({ asChild, children }: DropdownMenuTriggerProps) {
   const context = React.useContext(DropdownMenuContext);
   if (!context) throw new Error('DropdownMenuTrigger must be used within a DropdownMenu');
 
-  const child = React.Children.only(children) as React.ReactElement<Record<string, unknown>>;
+  if (!React.isValidElement<DropdownMenuTriggerChildProps>(children)) {
+    return null;
+  }
 
-  const handleClick = (event: React.MouseEvent) => {
+  const child = children;
+
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     child.props.onClick?.(event);
     if (!event.defaultPrevented) {
       context.setOpen(!context.open);
@@ -93,11 +105,11 @@ export function DropdownMenuTrigger({ asChild, children }: DropdownMenuTriggerPr
   );
 }
 
-interface DropdownMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
+type DropdownMenuContentProps = HTMLMotionProps<'div'> & {
   align?: Align;
   side?: Side;
   sideOffset?: number;
-}
+};
 
 export function DropdownMenuContent({
   className,
