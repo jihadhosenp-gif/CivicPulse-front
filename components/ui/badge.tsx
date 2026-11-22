@@ -23,13 +23,18 @@ const badgeVariants = cva(
           'border-danger/20 bg-danger/10 text-danger hover:bg-danger/20',
         navy:
           'border-transparent bg-navy text-navy-foreground hover:bg-slate-900',
+        accent:
+          'border-accent/20 bg-accent/10 text-accent hover:bg-accent/20',
         ghost:
           'border-transparent hover:bg-accent hover:text-accent-foreground',
+        info:
+          'border-info/20 bg-info/10 text-info hover:bg-info/20',
       },
       size: {
         sm: 'px-2 py-0.5 text-[0.7rem]',
         default: 'px-2.5 py-0.5 text-xs',
         lg: 'px-3 py-1 text-sm',
+        xl: 'px-4 py-1.5 text-base',
       },
     },
     defaultVariants: {

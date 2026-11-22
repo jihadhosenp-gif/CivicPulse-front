@@ -9,6 +9,8 @@ import {
   AlertCircle,
   Clock,
   ArrowRight,
+  XCircle,
+  MessageCircle,
 } from 'lucide-react';
 
 const Dialog = DialogPrimitive.Root;
@@ -27,10 +29,18 @@ interface NotificationItem {
 }
 
 const notificationColors: Record<NotificationItem['type'], string> = {
-  info: 'text-primary',
-  success: 'text-success',
-  warning: 'text-warning',
-  danger: 'text-danger',
+  info: 'text-primary bg-primary/10',
+  success: 'text-success bg-success/10',
+  warning: 'text-warning bg-warning/10',
+  danger: 'text-danger bg-danger/10',
+};
+
+const notificationIcons: Record<string, React.ReactNode> = {
+  CheckCircle: <CheckCircle className="h-4 w-4" />,
+  AlertCircle: <AlertCircle className="h-4 w-4" />,
+  Clock: <Clock className="h-4 w-4" />,
+  MessageCircle: <MessageCircle className="h-4 w-4" />,
+  XCircle: <XCircle className="h-4 w-4" />,
 };
 
 interface NotificationDropdownProps {
@@ -100,33 +110,49 @@ export function NotificationDropdown({
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-white border-2 border-background">
-              <span className="px-[0.5px]">{unreadCount}</span>
+            <span className="absolute top-1 right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1.5 text-[10px] font-bold text-white ring-2 ring-background">
+              {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
         </button>
       </DialogTrigger>
       <DialogContent
         className={cn(
-          'w-80 border border-input bg-popover shadow-lg rounded-xl p-0',
+          'w-80 border border-input bg-popover shadow-lg rounded-2xl p-0',
           open ? 'animate-in fade-in slide-in-from-top-2 z-50' : 'hidden'
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-input">
-          <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
-          {unreadCount > 0 && onMarkAllRead ? (
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
+            {unreadCount > 0 && (
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger/10 px-1.5 text-xs font-semibold text-danger">
+                {unreadCount}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-1">
+            {unreadCount > 0 && onMarkAllRead ? (
+              <button
+                onClick={onMarkAllRead}
+                className="text-xs font-medium text-primary hover:text-primary/90 transition-colors"
+              >
+                Mark all read
+              </button>
+            ) : null}
             <button
-              onClick={onMarkAllRead}
-              className="text-xs font-medium text-primary hover:text-primary/90 transition-colors"
+              onClick={() => setOpen(false)}
+              className="rounded-lg p-1.5 hover:bg-accent transition-colors"
+              aria-label="Close notifications"
             >
-              Mark all as read
+              <ArrowRight className="h-4 w-4 rotate-90" />
             </button>
-          ) : null}
+          </div>
         </div>
         <div className="max-h-96 overflow-y-auto">
           {notifications.length === 0 ? (
             <div className="px-4 py-8 text-center">
-              <AlertCircle className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
+              <Bell className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
               <p className="text-sm text-muted-foreground">No notifications yet</p>
             </div>
           ) : (
@@ -138,15 +164,15 @@ export function NotificationDropdown({
                   setOpen(false);
                 }}
                 className={cn(
-                  'flex items-center gap-3 px-4 py-3 border-b border-input hover:bg-accent transition-colors cursor-pointer group',
-                  !notification.read ? 'bg-primary/5' : ''
+                  'flex items-center gap-3 px-4 py-3 border-b border-input/60 hover:bg-accent/60 transition-colors cursor-pointer group',
+                  !notification.read && 'bg-primary/5'
                 )}
               >
                 <div
                   className={cn(
                     'flex h-8 w-8 items-center justify-center rounded-lg',
                     notificationColors[notification.type],
-                    notification.read ? 'bg-[hsl(var(--border))]' : ''
+                    notification.read && 'bg-muted/50'
                   )}
                 >
                   {notification.icon ?? (
@@ -161,13 +187,13 @@ export function NotificationDropdown({
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={cn('text-sm font-medium text-foreground', !notification.read ? 'font-semibold' : '')}>
+                  <p className={cn('text-sm text-foreground', !notification.read ? 'font-semibold' : 'font-medium')}>
                     {notification.title}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
                     {notification.description}
                   </p>
-                  <p className="text-[0.7rem] text-muted-foreground mt-0.5">
+                  <p className="text-[0.7rem] text-muted-foreground/80 mt-0.5">
                     {notification.time}
                   </p>
                 </div>
@@ -176,6 +202,16 @@ export function NotificationDropdown({
             ))
           )}
         </div>
+        {notifications.length > 0 && (
+          <div className="flex items-center justify-between border-t border-input px-4 py-2.5 text-xs text-muted-foreground">
+            <span>
+              {unreadCount} unread of {notifications.length} total
+            </span>
+            <button className="text-xs font-medium text-primary hover:text-primary/90">
+              View all
+            </button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

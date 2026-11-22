@@ -9,7 +9,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-xl border border-input bg-card text-card-foreground shadow-elegant transition-all hover:shadow-md',
+          'rounded-2xl border border-input bg-card text-card-foreground shadow-elegant transition-all duration-200',
           className
         )}
         {...props}
@@ -42,7 +42,7 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
       <h3
         ref={ref}
         className={cn(
-          'text-2xl font-semibold leading-none tracking-tight',
+          'text-xl font-semibold leading-none tracking-tight',
           className
         )}
         {...props}
@@ -102,7 +102,7 @@ export const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-xl border border-input bg-card text-card-foreground shadow-elegant transition-all group hover:shadow-xl',
+          'rounded-2xl border border-input bg-card text-card-foreground shadow-elegant transition-all duration-300 group hover:shadow-xl hover:-translate-y-1',
           className
         )}
         {...props}
@@ -111,3 +111,37 @@ export const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
   }
 );
 PremiumCard.displayName = 'PremiumCard';
+
+export interface CardPreviewProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const CardPreview = React.forwardRef<HTMLDivElement, CardPreviewProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'rounded-2xl border border-input bg-card text-card-foreground shadow-soft transition-all duration-200 overflow-hidden',
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+CardPreview.displayName = 'CardPreview';
+
+export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'rounded-2xl bg-card/80 backdrop-blur-lg border border-input/50 text-card-foreground shadow-lg transition-all duration-300',
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+GlassCard.displayName = 'GlassCard';

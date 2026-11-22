@@ -6,31 +6,48 @@ const Sheet = SheetPrimitive.Root;
 
 const SheetTrigger = SheetPrimitive.Trigger;
 
+const SheetPortal = SheetPrimitive.Portal;
+
+const SheetClose = SheetPrimitive.Close;
+
+const SheetOverlay = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      className
+    )}
+    {...props}
+  />
+));
+SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
+
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content> & { side?: 'left' | 'right' }
->(({ className, side = 'right', ...props }, ref) => {
-  return (
-    <SheetPrimitive.Portal>
-      <SheetPrimitive.Overlay
-        className={cn(
-          'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0'
-        )}
-      />
-      <SheetPrimitive.Content
-        ref={ref}
-        className={cn(
-          'fixed z-50 grid w-full max-w-[380px] translate-y-0 data-[state=closed]:duration-300 data-[state=open]:duration-500 border border-input bg-popover shadow-lg duration-200 data-[side=bottom]:animate-in data-[side=bottom]:slide-in-from-bottom-2 data-[side=bottom]:slide-out-to-bottom-2 data-[side=left]:animate-in data-[side=left]:slide-in-from-left-2 data-[side=left]:slide-out-to-left-2 data-[side=right]:animate-in data-[side=right]:slide-in-from-right-2 data-[side=right]:slide-out-to-right-2 sm:rounded-lg',
-          side === 'right'
-            ? 'right-0 top-0 bottom-0 translate-x-0 sm:translate-x-0 sm:rounded-none sm:border-l sm:shadow-lg'
-            : 'left-0 top-0 bottom-0 translate-x-0 sm:translate-x-0 sm:rounded-none sm:border-r sm:shadow-lg',
-          className
-        )}
-        {...props}
-      />
-    </SheetPrimitive.Portal>
-  );
-});
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content> & { side?: 'left' | 'right' | 'top' | 'bottom' }
+>(({ className, side = 'right', ...props }, ref) => (
+  <SheetPortal>
+    <SheetOverlay />
+    <SheetPrimitive.Content
+      ref={ref}
+      className={cn(
+        'fixed z-50 grid w-full max-w-[380px] translate-y-0 data-[state=closed]:duration-300 data-[state=open]:duration-500 border border-input bg-popover shadow-lg duration-200 data-[side=bottom]:animate-in data-[side=bottom]:slide-in-from-bottom-2 data-[side=bottom]:slide-out-to-bottom-2 data-[side=left]:animate-in data-[side=left]:slide-in-from-left-2 data-[side=left]:slide-out-to-left-2 data-[side=right]:animate-in data-[side=right]:slide-in-from-right-2 data-[side=right]:slide-out-to-right-2 data-[side=top]:animate-in data-[side=top]:slide-in-from-top-2 data-[side=top]:slide-out-to-top-2 sm:rounded-xl',
+        side === 'right'
+          ? 'right-0 top-0 bottom-0 translate-x-0 sm:translate-x-0 sm:rounded-none sm:border-l sm:shadow-xl'
+          : side === 'left'
+          ? 'left-0 top-0 bottom-0 translate-x-0 sm:translate-x-0 sm:rounded-none sm:border-r sm:shadow-xl'
+          : side === 'top'
+          ? 'top-0 left-0 right-0 translate-y-0 sm:translate-y-0 sm:rounded-none sm:border-b sm:shadow-xl'
+          : 'bottom-0 left-0 right-0 translate-y-0 sm:translate-y-0 sm:rounded-none sm:border-t sm:shadow-xl',
+        className
+      )}
+      {...props}
+    />
+  </SheetPortal>
+));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 const SheetHeader = ({
@@ -84,6 +101,9 @@ SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
   Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetClose,
   SheetTrigger,
   SheetContent,
   SheetHeader,

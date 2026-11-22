@@ -46,10 +46,30 @@ export function ThemeProvider({
     root.classList.toggle('dark', resolvedTheme === 'dark');
   }, [resolvedTheme, mounted]);
 
+  // Listen for system theme changes
+  React.useEffect(() => {
+    if (!mounted || theme !== 'system') return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      const root = document.documentElement;
+      root.classList.toggle('dark', mediaQuery.matches);
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [theme, mounted]);
+
   const setTheme = (next: Theme) => {
     setThemeState(next);
     localStorage.setItem(storageKey, next);
   };
+
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ theme: defaultTheme, setTheme, resolvedTheme: 'light' }}>
+        {children}
+      </ThemeContext.Provider>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>

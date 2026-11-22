@@ -4,14 +4,6 @@ import * as React from 'react';
 import { AnimatePresence, motion, type HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/utils/cn';
 
-/*
- * Lightweight dropdown menu built on top of React state + framer-motion.
- * The project does not ship @radix-ui/react-dropdown-menu, so this provides a
- * dependency-free implementation with the same surface API used across the app:
- *   DropdownMenu / DropdownMenuTrigger (asChild) / DropdownMenuContent /
- *   DropdownMenuItem / DropdownMenuSeparator / DropdownMenuLabel
- */
-
 type Align = 'start' | 'center' | 'end';
 type Side = 'top' | 'bottom';
 
@@ -192,7 +184,7 @@ export const DropdownMenuItem = React.forwardRef<HTMLButtonElement, DropdownMenu
           if (!event.defaultPrevented) context?.setOpen(false);
         }}
         className={cn(
-          'relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 text-sm outline-none transition-colors',
+          'relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none transition-colors',
           'focus-visible:bg-accent focus-visible:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           inset && 'pl-8',
           destructive ? 'text-danger hover:bg-danger/10' : 'text-foreground hover:bg-accent',
@@ -219,8 +211,22 @@ export function DropdownMenuLabel({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn('px-2.5 py-1.5 text-xs font-semibold text-muted-foreground', className)}>
+    <div className={cn('px-3 py-1.5 text-xs font-semibold text-muted-foreground', className)}>
       {children}
     </div>
+  );
+}
+
+export function DropdownMenuShortcut({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <span className={cn('ml-auto text-xs text-muted-foreground', className)}>
+      {children}
+    </span>
   );
 }

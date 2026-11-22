@@ -7,9 +7,10 @@ import { useTheme } from './theme-provider';
 
 interface ThemeToggleProps {
   className?: string;
+  showLabel?: boolean;
 }
 
-export function ThemeToggle({ className }: ThemeToggleProps = {}) {
+export function ThemeToggle({ className, showLabel = true }: ThemeToggleProps = {}) {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const toggle = () => {
@@ -34,14 +35,14 @@ export function ThemeToggle({ className }: ThemeToggleProps = {}) {
     <button
       onClick={toggle}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-3 py-2 text-sm font-medium text-foreground shadow-elegant transition-all hover:bg-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
+        'inline-flex items-center justify-center gap-2 rounded-xl border border-input bg-background px-3 py-2 text-sm font-medium text-foreground shadow-elegant transition-all hover:bg-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
         className
       )}
       aria-label={labels[theme]}
       title={labels[theme]}
     >
       {icons[theme]}
-      <span className="text-muted-foreground">{labels[theme]}</span>
+      {showLabel && <span className="text-muted-foreground">{labels[theme]}</span>}
     </button>
   );
 }
