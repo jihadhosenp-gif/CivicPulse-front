@@ -119,7 +119,7 @@ export function NotificationPanel({
               animate={{ scale: [1, 1.15, 1] }}
               exit={{ scale: 0 }}
               transition={{ duration: 1.6, repeat: Infinity, repeatType: 'loop' }}
-              className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-white ring-2 ring-background"
+              className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-primary-foreground ring-2 ring-background"
             >
               {unreadCount > 9 ? '9+' : unreadCount}
             </motion.span>

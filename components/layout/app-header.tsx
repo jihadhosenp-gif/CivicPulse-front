@@ -52,7 +52,7 @@ export function AppHeader({
           </button>
         )}
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
             <span className="text-sm font-bold tracking-tight">C</span>
           </div>
           <span className="font-bold text-xl tracking-tight text-foreground">
@@ -75,7 +75,7 @@ export function AppHeader({
           aria-label="Notifications"
         >
           <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-white border-2 border-background">
+          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-primary-foreground border-2 border-background">
             <span className="px-[0.5px]">9+</span>
           </span>
         </button>

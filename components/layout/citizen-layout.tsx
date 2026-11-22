@@ -48,7 +48,7 @@ export function CitizenLayout({
             <Menu className="h-5 w-5" />
           </button>
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
               <span className="text-sm font-bold tracking-tight">C</span>
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">
@@ -66,12 +66,13 @@ export function CitizenLayout({
         </div>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle showLabel={false} />
           <Link href="/profile" className="hidden sm:flex items-center gap-3 border-l border-input pl-4">
             <div className="text-right">
               <p className="text-sm font-semibold text-foreground">{user?.name ?? 'User'}</p>
               <p className="text-xs text-muted-foreground">{user?.role ?? 'Citizen'}</p>
             </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-sm">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
               <span className="text-xs font-bold">{user?.name?.charAt(0).toUpperCase() ?? 'U'}</span>
             </div>
           </Link>
@@ -85,7 +86,7 @@ export function CitizenLayout({
         <SheetContent side="left" className="w-72 border-l border-input shadow-xl">
           <SheetHeader className="pb-4">
             <SheetTitle className="flex items-center gap-2 text-xl font-bold tracking-tight text-foreground">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
                 <span className="text-sm font-bold tracking-tight">C</span>
               </div>
               CivicPulse<span className="text-primary">AI</span>

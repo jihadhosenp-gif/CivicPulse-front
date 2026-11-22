@@ -192,7 +192,7 @@ export function ImageUpload({
                   <button
                     type="button"
                     onClick={() => removeImage(image.id)}
-                    className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-navy/80 text-white opacity-0 shadow-sm transition-opacity hover:bg-danger focus:opacity-100 focus:outline-none group-hover:opacity-100"
+                    className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-foreground/80 text-background opacity-0 shadow-sm transition-opacity hover:bg-danger hover:text-danger-foreground focus:opacity-100 focus:outline-none group-hover:opacity-100"
                     aria-label={`Remove ${image.file.name}`}
                   >
                     {isUploading ? (

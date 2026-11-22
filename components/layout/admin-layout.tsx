@@ -66,7 +66,7 @@ export function AdminLayout({
             <Menu className="h-5 w-5" />
           </button>
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
               <span className="text-sm font-bold tracking-tight">C</span>
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">
@@ -84,6 +84,9 @@ export function AdminLayout({
         </div>
 
         <div className="flex items-center gap-2">
+          <div className="lg:hidden">
+            <ThemeToggle showLabel={false} />
+          </div>
           <NotificationDropdown />
           <button
             className="relative rounded-lg p-1.5 hover:bg-accent transition-colors"
@@ -109,7 +112,7 @@ export function AdminLayout({
         <SheetContent side="left" className="w-72 border-l border-input shadow-xl">
           <SheetHeader className="pb-4">
             <SheetTitle className="flex items-center gap-2 text-xl font-bold tracking-tight text-foreground">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
                 <span className="text-sm font-bold tracking-tight">C</span>
               </div>
               CivicPulse<span className="text-primary">AI</span>
@@ -166,7 +169,7 @@ export function AdminLayout({
         <div className="flex h-full flex-col">
           <div className="flex h-16 items-center justify-between px-4">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
                 <span className="text-sm font-bold tracking-tight">C</span>
               </div>
               <span className="font-bold text-xl tracking-tight text-foreground">

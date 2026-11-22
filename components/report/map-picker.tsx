@@ -239,7 +239,7 @@ export function MapPicker({
           className={cn(
             'h-[280px] w-full',
             // Leaflet needs a defined height; give it a subtle grid backdrop while loading.
-            status === 'loading' && 'bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px]'
+            status === 'loading' && 'map-grid'
           )}
           aria-label="Map location picker"
         />

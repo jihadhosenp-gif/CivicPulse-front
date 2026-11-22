@@ -30,7 +30,7 @@ export function PublicNavbar({ className }: PublicNavbarProps = {}) {
       )}
     >
       <Link href="/" className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
           <span className="text-sm font-bold tracking-tight">C</span>
         </div>
         <span className="font-bold text-xl tracking-tight text-foreground">

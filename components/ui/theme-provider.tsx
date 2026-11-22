@@ -1,84 +1,120 @@
 'use client';
 
 import * as React from 'react';
+import {
+  DEFAULT_THEME,
+  THEME_STORAGE_KEY,
+  isTheme,
+  type ResolvedTheme,
+  type Theme,
+} from '@/utils/theme';
 
-type Theme = 'light' | 'dark' | 'system';
-
-interface ThemeContextType {
+interface ThemeContextValue {
+  /** The user's stored preference. */
   theme: Theme;
+  /** The palette currently painted on screen. */
+  resolvedTheme: ResolvedTheme;
   setTheme: (theme: Theme) => void;
-  resolvedTheme: 'light' | 'dark';
+  /** Flips light <-> dark using the currently visible palette. */
+  toggleTheme: () => void;
+  /** False until the stored preference has been read on the client. */
+  mounted: boolean;
 }
 
-const ThemeContext = React.createContext<ThemeContextType | null>(null);
+const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
-export function ThemeProvider({
-  children,
-  defaultTheme = 'system',
-  storageKey = 'civicpulse-theme',
-}: {
+function getSystemTheme(): ResolvedTheme {
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+}
+
+function applyResolvedTheme(theme: ResolvedTheme) {
+  const root = document.documentElement;
+  root.classList.toggle('dark', theme === 'dark');
+  root.style.colorScheme = theme;
+}
+
+export interface ThemeProviderProps {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
-}) {
+}
+
+export function ThemeProvider({
+  children,
+  defaultTheme = DEFAULT_THEME,
+  storageKey = THEME_STORAGE_KEY,
+}: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(defaultTheme);
+  const [systemTheme, setSystemTheme] = React.useState<ResolvedTheme>('light');
   const [mounted, setMounted] = React.useState(false);
 
+  // The inline bootstrap script has already applied the correct class before
+  // paint. Here we only synchronise React state with that stored preference.
   React.useEffect(() => {
+    let stored: string | null = null;
+    try {
+      stored = window.localStorage.getItem(storageKey);
+    } catch {
+      // Storage can be unavailable (private mode / embedded webviews).
+    }
+    setThemeState(isTheme(stored) ? stored : defaultTheme);
+    setSystemTheme(getSystemTheme());
     setMounted(true);
-    const stored = localStorage.getItem(storageKey) as Theme | null;
-    if (stored) {
-      setThemeState(stored);
-    }
-  }, []);
+  }, [defaultTheme, storageKey]);
 
-  const resolvedTheme = React.useMemo(() => {
-    if (typeof window === 'undefined') return 'light';
-    if (theme === 'system') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return theme;
-  }, [theme]);
+  // Follow OS changes only while "system" is the active preference.
+  React.useEffect(() => {
+    if (!mounted || theme !== 'system') return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (event: MediaQueryListEvent) => {
+      setSystemTheme(event.matches ? 'dark' : 'light');
+    };
+
+    setSystemTheme(getSystemTheme());
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [mounted, theme]);
+
+  const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme;
 
   React.useEffect(() => {
     if (!mounted) return;
-    const root = document.documentElement;
-    root.classList.toggle('dark', resolvedTheme === 'dark');
-  }, [resolvedTheme, mounted]);
+    applyResolvedTheme(resolvedTheme);
+  }, [mounted, resolvedTheme]);
 
-  // Listen for system theme changes
-  React.useEffect(() => {
-    if (!mounted || theme !== 'system') return;
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => {
-      const root = document.documentElement;
-      root.classList.toggle('dark', mediaQuery.matches);
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme, mounted]);
+  const setTheme = React.useCallback(
+    (next: Theme) => {
+      setThemeState(next);
+      try {
+        window.localStorage.setItem(storageKey, next);
+      } catch {
+        // Preference still applies for this session.
+      }
+    },
+    [storageKey]
+  );
 
-  const setTheme = (next: Theme) => {
-    setThemeState(next);
-    localStorage.setItem(storageKey, next);
-  };
+  const toggleTheme = React.useCallback(() => {
+    const current: ResolvedTheme =
+      theme === 'system' ? getSystemTheme() : theme;
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  }, [setTheme, theme]);
 
-  if (!mounted) {
-    return (
-      <ThemeContext.Provider value={{ theme: defaultTheme, setTheme, resolvedTheme: 'light' }}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  }
+  const value = React.useMemo<ThemeContextValue>(
+    () => ({ theme, resolvedTheme, setTheme, toggleTheme, mounted }),
+    [theme, resolvedTheme, setTheme, toggleTheme, mounted]
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
 
-export function useTheme() {
+export function useTheme(): ThemeContextValue {
   const context = React.useContext(ThemeContext);
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
@@ -87,3 +123,4 @@ export function useTheme() {
 }
 
 export { ThemeContext };
+export type { ResolvedTheme, Theme } from '@/utils/theme';

@@ -157,35 +157,39 @@ export default function DesignSystemPage() {
             </h3>
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#F8FAFC' }} />
-                <span className="text-sm text-muted-foreground">Background</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#FFFFFF' }} />
-                <span className="text-sm text-muted-foreground">Card / Surface</span>
+                <span className="text-sm text-muted-foreground">Background / Surface</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#1E293B' }} />
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#F8FAFC' }} />
+                <span className="text-sm text-muted-foreground">Secondary</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#0F172A' }} />
                 <span className="text-sm text-muted-foreground">Text</span>
               </div>
             </div>
           </div>
-          <div className="p-6 rounded-xl border border-input bg-navy shadow-elegant">
-            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+          <div className="p-6 rounded-xl border border-slate-700 bg-[#0B1120] text-slate-50 shadow-elegant">
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
               <Moon className="h-4 w-4 text-warning" /> Dark
             </h3>
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#101828' }} />
-                <span className="text-sm text-muted-foreground">Background</span>
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#0B1120' }} />
+                <span className="text-sm text-slate-300">Background</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#111C31' }} />
+                <span className="text-sm text-slate-300">Card / Surface</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#1E293B' }} />
-                <span className="text-sm text-muted-foreground">Card / Surface</span>
+                <span className="text-sm text-slate-300">Elevated</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#F8FAFC' }} />
-                <span className="text-sm text-muted-foreground">Text</span>
+                <span className="text-sm text-slate-300">Text</span>
               </div>
             </div>
           </div>
@@ -200,16 +204,17 @@ export default function DesignSystemPage() {
           across all pages and components.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <ColorSwatch name="Primary" value="#4F46E5" className="text-primary" />
-          <ColorSwatch name="Deep Navy" value="#101828" className="text-navy" />
-          <ColorSwatch name="Background" value="#F8FAFC" className="text-foreground" />
-          <ColorSwatch name="White" value="#FFFFFF" className="text-foreground" />
-          <ColorSwatch name="Soft Blue" value="#EFF6FF" className="text-primary" />
-          <ColorSwatch name="Text" value="#1E293B" className="text-foreground" />
-          <ColorSwatch name="Muted" value="#64748B" className="text-muted-foreground" />
-          <ColorSwatch name="Success" value="#16A34A" className="text-success" />
-          <ColorSwatch name="Warning" value="#F59E0B" className="text-warning" />
-          <ColorSwatch name="Danger" value="#DC2626" className="text-danger" />
+          <ColorSwatch name="Primary" value="hsl(var(--primary))" />
+          <ColorSwatch name="Background" value="hsl(var(--background))" />
+          <ColorSwatch name="Secondary" value="hsl(var(--secondary-background))" />
+          <ColorSwatch name="Surface" value="hsl(var(--surface))" />
+          <ColorSwatch name="Main text" value="hsl(var(--foreground))" />
+          <ColorSwatch name="Secondary text" value="hsl(var(--muted-foreground))" />
+          <ColorSwatch name="Muted text" value="hsl(var(--text-muted))" />
+          <ColorSwatch name="Border" value="hsl(var(--border))" />
+          <ColorSwatch name="Success" value="hsl(var(--success))" />
+          <ColorSwatch name="Warning" value="hsl(var(--warning))" />
+          <ColorSwatch name="Danger" value="hsl(var(--danger))" />
         </div>
       </section>
 
@@ -262,7 +267,7 @@ export default function DesignSystemPage() {
               className="rounded-lg border border-input p-4 flex flex-col items-center justify-between"
               style={{ height: '120px' }}
             >
-              <div className="w-full h-1 rounded-lg border border-input mb-3" style={{ backgroundColor: '#E2E8F0' }} />
+              <div className="w-full h-1 rounded-lg border border-input mb-3" style={{ backgroundColor: 'hsl(var(--border))' }} />
               <div className="flex items-center gap-2">
                 <span className="text-xs font-mono text-muted-foreground">{token.label}</span>
               </div>
@@ -286,7 +291,7 @@ export default function DesignSystemPage() {
                 className="h-12 w-12 rounded border border-input bg-card flex items-center justify-center"
                 style={{
                   borderRadius: token.value,
-                  backgroundColor: '#FFFFFF',
+                  backgroundColor: 'hsl(var(--card))',
                 }}
               >
                 <span className="text-[0.65rem] font-medium text-muted-foreground">{token.label}</span>

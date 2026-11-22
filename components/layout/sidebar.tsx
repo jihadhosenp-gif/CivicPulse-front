@@ -44,7 +44,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps = {}) {
       <div className="flex h-full flex-col">
         <div className="flex h-16 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
               <span className="text-sm font-bold tracking-tight">C</span>
             </div>
             {!isOpen ? null : (

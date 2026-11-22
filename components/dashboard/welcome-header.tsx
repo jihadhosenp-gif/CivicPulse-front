@@ -94,7 +94,7 @@ export function WelcomeHeader({ user, stats }: WelcomeHeaderProps) {
           <span>Active today</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Moon className="h-4 w-4 text-navy" />
+          <Moon className="h-4 w-4 text-primary" />
           <span>Dark mode ready</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">

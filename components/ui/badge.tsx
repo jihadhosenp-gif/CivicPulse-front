@@ -22,7 +22,7 @@ const badgeVariants = cva(
         danger:
           'border-danger/20 bg-danger/10 text-danger hover:bg-danger/20',
         navy:
-          'border-transparent bg-navy text-navy-foreground hover:bg-slate-900',
+          'border-transparent bg-navy text-navy-foreground hover:bg-navy/90',
         accent:
           'border-accent/20 bg-accent/10 text-accent hover:bg-accent/20',
         ghost:

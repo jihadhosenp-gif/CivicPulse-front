@@ -87,7 +87,7 @@ export function ImageGallery({ images, alt = 'Report image', className }: ImageG
                 loading="lazy"
               />
             )}
-            <span className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-navy/70 text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+            <span className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-foreground/70 text-background opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
               <Maximize2 className="h-3.5 w-3.5" />
             </span>
           </button>
@@ -100,7 +100,7 @@ export function ImageGallery({ images, alt = 'Report image', className }: ImageG
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-navy/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm"
             onClick={close}
             role="dialog"
             aria-modal="true"

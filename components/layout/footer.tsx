@@ -44,7 +44,7 @@ export function Footer({ className }: FooterProps = {}) {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-elegant">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
                 <span className="text-sm font-bold tracking-tight">C</span>
               </div>
               <span className="font-bold text-xl tracking-tight text-foreground">

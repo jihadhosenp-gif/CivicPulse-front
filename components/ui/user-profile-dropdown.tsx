@@ -85,7 +85,7 @@ export function UserProfileDropdown({
           aria-expanded={open}
           aria-haspopup="true"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-sm text-xs font-bold">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm text-xs font-bold">
             {avatar}
           </div>
           <div className="hidden sm:flex flex-col items-start">

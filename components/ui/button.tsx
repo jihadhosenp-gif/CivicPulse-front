@@ -8,13 +8,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-elegant hover:bg-indigo-600/90 hover:shadow-md',
+          'bg-primary text-primary-foreground shadow-elegant hover:bg-primary-hover hover:shadow-md',
         destructive:
-          'bg-danger text-danger-foreground shadow-elegant hover:bg-red-600/90 hover:shadow-md',
+          'bg-danger text-danger-foreground shadow-elegant hover:bg-danger/90 hover:shadow-md',
         outline:
           'border border-input bg-background hover:bg-accent hover:text-foreground',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-slate-200',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost:
           'hover:bg-accent hover:text-foreground',
         soft:
@@ -24,9 +24,9 @@ const buttonVariants = cva(
         softSuccess:
           'bg-success/10 text-success hover:bg-success/20',
         navy:
-          'bg-navy text-navy-foreground shadow-elegant hover:bg-slate-900 hover:shadow-md',
+          'bg-navy text-navy-foreground shadow-elegant hover:bg-navy/90 hover:shadow-md',
         accent:
-          'bg-accent text-accent-foreground shadow-elegant hover:bg-cyan-500/90 hover:shadow-md',
+          'bg-accent text-accent-foreground shadow-elegant hover:bg-accent-hover hover:shadow-md',
         link:
           'text-primary underline-offset-4 hover:underline',
       },

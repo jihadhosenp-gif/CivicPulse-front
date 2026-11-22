@@ -23,10 +23,10 @@ import {
   X,
   Play,
   Eye,
-  Sun,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fadeInUp, staggerContainer, staggerItem, pageVariants, pageTransition } from "@/components/motion/variants";
 
@@ -165,7 +165,7 @@ export default function LandingPage() {
           className="sticky top-0 z-40 flex h-16 items-center justify-between px-4 border-b border-input bg-background/80 backdrop-blur-md transition-all"
         >
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg">
               <span className="text-sm font-bold tracking-tight">C</span>
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">
@@ -186,7 +186,7 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <ThemeToggleBtn />
+            <ThemeToggle />
             <Link
               href="/report/new"
               className="hidden sm:flex items-center justify-center gap-2 h-10 px-5 font-medium shadow-elegant hover:shadow-md transition-all bg-primary text-primary-foreground rounded-xl"
@@ -230,7 +230,7 @@ export default function LandingPage() {
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-input">
                 <Link href="/" className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white shadow-elegant">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-elegant">
                     <span className="text-sm font-bold tracking-tight">C</span>
                   </div>
                   <span className="font-bold text-lg tracking-tight text-foreground">
@@ -375,7 +375,7 @@ export default function LandingPage() {
                     <div className="relative p-8">
                       <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-2">
-                          <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-white">
+                          <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground">
                             <span className="text-sm font-bold">C</span>
                           </div>
                           <span className="font-semibold text-foreground">CivicPulse AI</span>
@@ -525,7 +525,7 @@ export default function LandingPage() {
                     key={step.step}
                     className="p-8 rounded-3xl border border-input bg-card shadow-elegant text-center group"
                   >
-                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-6">
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors mb-6">
                       {step.icon}
                     </div>
                     <span className="inline-block px-3 py-1 rounded-full bg-input text-xs font-semibold text-muted-foreground mb-4">
@@ -705,7 +705,7 @@ export default function LandingPage() {
 
           {/* Call To Action */}
           <section className="px-4 py-20 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto rounded-[2.5rem] bg-gradient-hero p-8 md:p-16 text-white text-center shadow-xl overflow-hidden relative">
+            <div className="max-w-4xl mx-auto rounded-[2.5rem] bg-gradient-hero p-8 md:p-16 text-primary-foreground text-center shadow-xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-mesh pointer-events-none" />
               <motion.h2
                 variants={fadeInUp}
@@ -720,7 +720,7 @@ export default function LandingPage() {
                 initial="hidden"
                 animate="visible"
                 transition={{ delay: 0.1 }}
-                className="text-lg text-white/90 mb-10 max-w-lg mx-auto leading-relaxed relative z-10"
+                className="text-lg text-primary-foreground/90 mb-10 max-w-lg mx-auto leading-relaxed relative z-10"
               >
                 Join municipalities using CivicPulse AI to turn civic issues into action.
               </motion.p>
@@ -733,14 +733,14 @@ export default function LandingPage() {
               >
                 <Link
                   href="/report/new"
-                  className="flex items-center justify-center gap-2 h-12 px-8 font-medium shadow-lg hover:shadow-xl transition-all bg-white text-primary rounded-xl"
+                  className="flex items-center justify-center gap-2 h-12 px-8 font-medium shadow-lg hover:shadow-xl transition-all bg-background text-foreground rounded-xl"
                 >
                   <ArrowRight className="h-5 w-5" />
                   Report an Issue
                 </Link>
                 <Link
                   href="/login"
-                  className="flex items-center justify-center gap-2 h-12 px-8 font-medium border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-all rounded-xl"
+                  className="flex items-center justify-center gap-2 h-12 px-8 font-medium border border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 transition-all rounded-xl"
                 >
                   <Mail className="h-5 w-5" />
                   Explore Platform
@@ -756,7 +756,7 @@ export default function LandingPage() {
             <div className="grid md:grid-cols-4 gap-12 mb-12">
               <div className="col-span-1 md:col-span-2">
                 <div className="flex items-center gap-2 mb-6">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white shadow-elegant">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-elegant">
                     <span className="text-sm font-bold tracking-tight">C</span>
                   </div>
                   <span className="font-bold text-xl tracking-tight text-foreground">
@@ -882,19 +882,6 @@ export default function LandingPage() {
         </footer>
       </motion.div>
     </div>
-  );
-}
-
-function ThemeToggleBtn() {
-  return (
-    <button
-      className="inline-flex items-center justify-center gap-2 rounded-xl border border-input bg-background px-3 py-2 text-sm font-medium text-foreground shadow-elegant transition-all hover:bg-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
-      aria-label="Theme mode"
-      title="Theme mode"
-    >
-      <Sun className="h-5 w-5" />
-      <span className="text-muted-foreground">Light</span>
-    </button>
   );
 }
 

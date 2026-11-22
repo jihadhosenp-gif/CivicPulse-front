@@ -195,12 +195,12 @@ export function QuickReportButton({
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.8, x: position.includes('right') ? 10 : -10 }}
             className={cn(
-              'absolute bottom-full right-0 mb-2 px-3 py-1.5 text-xs font-medium text-white bg-navy rounded-lg shadow-lg whitespace-nowrap',
+              'absolute bottom-full right-0 mb-2 rounded-lg border border-border bg-popover px-3 py-1.5 text-xs font-medium text-popover-foreground shadow-lg whitespace-nowrap',
               'pointer-events-none'
             )}
           >
             Quick Actions
-            <div className="absolute bottom-[-4px] right-4 w-0 h-0 border-4 border-transparent border-t-navy" />
+            <div className="absolute bottom-[-4px] right-4 h-0 w-0 border-4 border-transparent border-t-popover" />
           </motion.div>
         )}
       </AnimatePresence>

@@ -26,13 +26,13 @@ export default function AdminDashboardPage() {
       <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {cards.map((c) => (
-          <div key={c.label} className="bg-white shadow rounded p-4">
-            <div className="text-sm text-gray-500">{c.label}</div>
+          <div key={c.label} className="bg-card text-card-foreground border border-input shadow-elegant rounded-xl p-4">
+            <div className="text-sm text-muted-foreground">{c.label}</div>
             <div className="text-2xl font-bold">{c.value}</div>
           </div>
         ))}
       </div>
-      <div className="bg-white shadow rounded p-4">
+      <div className="bg-card text-card-foreground border border-input shadow-elegant rounded-xl p-4">
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left border-b">
@@ -54,8 +54,18 @@ export default function AdminDashboardPage() {
           </tbody>
         </table>
         <div className="mt-4 flex gap-2">
-          <button onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
-          <button onClick={() => setPage((p) => p + 1)}>Next</button>
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className="rounded-lg border border-input bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            className="rounded-lg border border-input bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

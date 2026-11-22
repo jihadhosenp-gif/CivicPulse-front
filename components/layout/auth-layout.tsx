@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { Mail, Shield, ArrowRight } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface AuthLayoutProps {
   title?: string;
@@ -26,7 +27,10 @@ export function AuthLayout({
   children,
 }: AuthLayoutProps) {
   return (
-    <div className={cn('min-h-screen flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8', className)}>
+    <div className={cn('relative min-h-screen flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8', className)}>
+      <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
+        <ThemeToggle showLabel={false} />
+      </div>
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <motion.div
@@ -34,7 +38,7 @@ export function AuthLayout({
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center justify-center gap-2 mb-6"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-lg">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
               <span className="text-sm font-bold tracking-tight">C</span>
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">

@@ -41,13 +41,13 @@ export function Navbar({ onSidebarToggle }: NavbarProps = {}) {
       <div className="flex items-center gap-2">
         <button className="relative rounded-lg p-1.5 hover:bg-accent transition-colors">
           <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-white">
+          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-primary-foreground">
             <span className="px-[0.5px]">9+</span>
           </span>
         </button>
         <button className="relative rounded-lg p-1.5 hover:bg-accent transition-colors">
           <MessageCircle className="h-5 w-5" />
-          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-primary px-[6px] py-[2px] text-[10px] text-white">
+          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-primary px-[6px] py-[2px] text-[10px] text-primary-foreground">
             <span className="px-[0.5px]">2</span>
           </span>
         </button>
@@ -61,7 +61,7 @@ export function Navbar({ onSidebarToggle }: NavbarProps = {}) {
               <p className="text-sm font-semibold text-foreground">Jane Admin</p>
               <p className="text-xs text-muted-foreground">Administrator</p>
             </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-sm">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
               <span className="text-xs font-bold">JA</span>
             </div>
           </div>

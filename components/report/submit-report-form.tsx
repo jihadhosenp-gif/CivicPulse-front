@@ -374,7 +374,7 @@ export function SubmitReportForm() {
                         selected ? 'border-primary bg-primary' : 'border-muted-foreground/40'
                       )}
                     >
-                      {selected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      {selected && <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />}
                     </span>
                     {cat.label}
                   </span>
