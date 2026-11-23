@@ -20,7 +20,7 @@ export const pageTransition = {
 /** Staggered children container */
 export const staggerContainer: Variants = {
   hidden: { opacity: 0 },
-  animate: {
+  visible: {
     opacity: 1,
     transition: {
       staggerChildren: 0.06,
@@ -32,7 +32,7 @@ export const staggerContainer: Variants = {
 /** Staggered item */
 export const staggerItem: Variants = {
   hidden: { opacity: 0, y: 14 },
-  animate: {
+  visible: {
     opacity: 1,
     y: 0,
     transition: { ease: ease as unknown as [number, number, number, number], duration: 0.4 },
@@ -49,7 +49,7 @@ export const fadeIn: Variants = {
 /** Fade in + slide up */
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
-  animate: {
+  visible: {
     opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: ease as unknown as [number, number, number, number] },

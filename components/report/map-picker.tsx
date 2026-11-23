@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
  * MapPicker — interactive point picker.
  *
  * Design goals:
- *  - No API key required: uses Leaflet + OpenStreetMap tiles (free, keyless).
+ *  - Uses Leaflet + OpenTopoMap raster tiles (no API key required).
  *  - Progressive enhancement: Leaflet is loaded lazily from a CDN so the report
  *    page still renders (and coordinates can be typed manually) even offline or
  *    when the CDN is blocked.
@@ -18,10 +18,10 @@ import { Button } from '@/components/ui/button';
  */
 
 const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-const OSM_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const OSM_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const OPENTOPOMAP_TILE_URL = 'https://tile.opentopomap.org/{z}/{x}/{y}.png';
+const OPENTOPOMAP_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors | ' +
+  '&copy; <a href="https://opentopomap.org" target="_blank" rel="noopener noreferrer">OpenTopoMap</a>';
 
 // Leaflet is loaded as a global; we type only what we touch to avoid a hard dep.
 type LatLng = { lat: number; lng: number };
@@ -35,9 +35,20 @@ type LeafletMarker = {
   setLatLng: (latlng: LatLng) => LeafletMarker;
   addTo: (map: LeafletMap) => LeafletMarker;
 };
+type LeafletTile = {
+  src: string;
+};
+type LeafletTileEvent = {
+  tile: LeafletTile;
+  error?: Error;
+};
+type LeafletTileLayer = {
+  addTo: (m: LeafletMap) => unknown;
+  on: (event: string, handler: (e: LeafletTileEvent) => void) => LeafletTileLayer;
+};
 type LeafletNamespace = {
   map: (el: HTMLElement, options?: Record<string, unknown>) => LeafletMap;
-  tileLayer: (url: string, options?: Record<string, unknown>) => { addTo: (m: LeafletMap) => unknown };
+  tileLayer: (url: string, options?: Record<string, unknown>) => LeafletTileLayer;
   marker: (latlng: LatLng, options?: Record<string, unknown>) => LeafletMarker;
 };
 
@@ -49,7 +60,7 @@ declare global {
 
 let leafletPromise: Promise<LeafletNamespace> | null = null;
 
-/** Load Leaflet (JS + CSS) once, returning the global namespace. */
+/** Load Leaflet JS once, returning the global namespace. CSS is imported globally in app/layout.tsx. */
 function loadLeaflet(): Promise<LeafletNamespace> {
   if (typeof window === 'undefined') {
     return Promise.reject(new Error('Leaflet can only load in the browser'));
@@ -58,13 +69,6 @@ function loadLeaflet(): Promise<LeafletNamespace> {
   if (leafletPromise) return leafletPromise;
 
   leafletPromise = new Promise<LeafletNamespace>((resolve, reject) => {
-    if (!document.querySelector(`link[href="${LEAFLET_CSS}"]`)) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = LEAFLET_CSS;
-      document.head.appendChild(link);
-    }
-
     const existing = document.querySelector<HTMLScriptElement>(
       `script[src="${LEAFLET_JS}"]`
     );
@@ -90,7 +94,8 @@ function loadLeaflet(): Promise<LeafletNamespace> {
   return leafletPromise;
 }
 
-const DEFAULT_CENTER: LatLng = { lat: 23.8103, lng: 90.4125 }; // Dhaka, BD (product locale)
+const DEFAULT_CENTER: LatLng = { lat: 23.6850, lng: 90.3563 }; // Bangladesh
+const DEFAULT_ZOOM = 7;
 
 interface MapPickerProps {
   /** Current selected point, or null. */
@@ -136,18 +141,42 @@ export function MapPicker({
         leafletRef.current = L;
 
         const center: LatLng = value ?? DEFAULT_CENTER;
+        const initialZoom = value ? DEFAULT_ZOOM : DEFAULT_ZOOM;
         const map = L.map(containerRef.current, {
           center,
-          zoom: 14,
+          zoom: initialZoom,
           attributionControl: true,
+          maxBounds: [
+            [20.5, 88.0],  // Southwest corner of Bangladesh
+            [26.7, 92.7],  // Northeast corner of Bangladesh
+          ],
+          maxBoundsViscosity: 1.0,
         });
-        L.tileLayer(OSM_TILE_URL, {
-          attribution: OSM_ATTRIBUTION,
+        const tileLayer = L.tileLayer(OPENTOPOMAP_TILE_URL, {
+          attribution: OPENTOPOMAP_ATTRIBUTION,
           maxZoom: 19,
-        }).addTo(map);
+          subdomains: 'abc',
+        });
+
+        tileLayer.on('tileloadstart', (e) => {
+          console.log('[OpenTopoMap] tileloadstart:', e.tile.src);
+        });
+        tileLayer.on('tileload', (e) => {
+          console.log('[OpenTopoMap] tileload OK:', e.tile.src);
+        });
+        tileLayer.on('tileerror', (e) => {
+          console.error('[OpenTopoMap] tileerror:', e.tile.src, e.error);
+          setStatus('error');
+        });
+        tileLayer.on('tileunload', (e) => {
+          console.log('[OpenTopoMap] tileunload:', e.tile.src);
+        });
+
+        tileLayer.addTo(map);
 
         map.on('click', (e) => {
           emitPoint(e.latlng.lat, e.latlng.lng);
+          mapRef.current?.setView(e.latlng, DEFAULT_ZOOM);
         });
 
         if (value) {
@@ -159,8 +188,12 @@ export function MapPicker({
         mapRef.current = map;
         setStatus('ready');
 
-        // Defer a size recalc until the element has its final layout.
-        window.setTimeout(() => map.invalidateSize(), 0);
+        // Wait for browser paint before invalidating size so Leaflet calculates dimensions correctly.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            map.invalidateSize();
+          });
+        });
       })
       .catch(() => {
         if (!cancelled) setStatus('error');
@@ -199,8 +232,12 @@ export function MapPicker({
 
   const recenter = () => {
     const target = value ?? DEFAULT_CENTER;
-    mapRef.current?.setView(target, 15);
-    mapRef.current?.invalidateSize();
+    mapRef.current?.setView(target, DEFAULT_ZOOM);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        mapRef.current?.invalidateSize();
+      });
+    });
   };
 
   const applyManualCoordinates = () => {
@@ -220,7 +257,12 @@ export function MapPicker({
     }
     setCoordError(null);
     emitPoint(lat, lng);
-    mapRef.current?.setView({ lat, lng }, 15);
+    mapRef.current?.setView({ lat, lng }, DEFAULT_ZOOM);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        mapRef.current?.invalidateSize();
+      });
+    });
   };
 
   const clearPoint = () => {
@@ -233,14 +275,23 @@ export function MapPicker({
   return (
     <div className={cn('space-y-3', className)}>
       {/* Map canvas */}
-      <div className="relative overflow-hidden rounded-lg border border-input bg-muted">
+      <div
+        className={cn(
+          'relative overflow-hidden rounded-lg border border-input bg-muted',
+          // Subtle grid backdrop shown only while the map is loading. This lives on
+          // the React-owned shell, NOT on the Leaflet container: Leaflet adds the
+          // `leaflet-container` class to the inner element imperatively, and toggling
+          // that element's className on re-render would strip Leaflet's class. Without
+          // it, Leaflet's `max-width:none` reset stops applying and Tailwind's
+          // `img { max-width:100% }` collapses every tile to 0px wide (blank map).
+          status === 'loading' && 'map-grid'
+        )}
+      >
         <div
           ref={containerRef}
-          className={cn(
-            'h-[280px] w-full',
-            // Leaflet needs a defined height; give it a subtle grid backdrop while loading.
-            status === 'loading' && 'map-grid'
-          )}
+          // Keep this className static so React never rewrites it after Leaflet
+          // initialises (a changed className would remove `leaflet-container`).
+          className="h-[280px] w-full"
           aria-label="Map location picker"
         />
 
@@ -310,7 +361,7 @@ export function MapPicker({
           <Input
             id="latitude"
             inputMode="decimal"
-            placeholder="e.g. 23.8103"
+            placeholder="e.g. 23.6850"
             value={latInput}
             onChange={(e) => {
               setLatInput(e.target.value);
@@ -327,7 +378,7 @@ export function MapPicker({
           <Input
             id="longitude"
             inputMode="decimal"
-            placeholder="e.g. 90.4125"
+            placeholder="e.g. 90.3563"
             value={lngInput}
             onChange={(e) => {
               setLngInput(e.target.value);

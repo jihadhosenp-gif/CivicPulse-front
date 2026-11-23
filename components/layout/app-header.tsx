@@ -1,19 +1,15 @@
+
 'use client';
 
 import * as React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/utils/cn';
-import {
-  Search,
-  Bell,
-  MessageCircle,
-  HelpCircle,
-  Menu,
-  MapPin,
-} from 'lucide-react';
+import { Menu, Search, HelpCircle } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { NotificationDropdown } from '@/components/ui/notification-dropdown';
 import { UserProfileDropdown } from '@/components/ui/user-profile-dropdown';
+import { Input } from '@/components/ui/input';
 
 interface AppHeaderProps {
   user?: {
@@ -24,6 +20,7 @@ interface AppHeaderProps {
   };
   onLogout?: () => void;
   onSidebarToggle?: () => void;
+  onSearch?: (value: string) => void;
   className?: string;
 }
 
@@ -31,8 +28,22 @@ export function AppHeader({
   user,
   onLogout,
   onSidebarToggle,
+  onSearch,
   className,
 }: AppHeaderProps = {}) {
+  const pathname = usePathname();
+  const [search, setSearch] = React.useState('');
+  const [mobileSearchOpen, setMobileSearchOpen] = React.useState(false);
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    onSearch?.(search);
+  };
+
   return (
     <header
       className={cn(
@@ -41,16 +52,22 @@ export function AppHeader({
       )}
     >
       <div className="flex items-center gap-4">
+
+        {/* Sidebar toggle */}
         {onSidebarToggle && (
           <button
-            className="rounded-lg p-1.5 hover:bg-accent transition-colors"
+            type="button"
             onClick={onSidebarToggle}
             aria-label="Toggle navigation"
+            aria-expanded={false}
+            className="rounded-lg p-1.5 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 md:hidden"
           >
             <span className="sr-only">Toggle navigation</span>
             <Menu className="h-5 w-5" />
           </button>
         )}
+
+        {/* Brand */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
             <span className="text-sm font-bold tracking-tight">C</span>
@@ -59,41 +76,79 @@ export function AppHeader({
             CivicPulse<span className="text-primary">AI</span>
           </span>
         </Link>
-        <div className="relative hidden sm:flex w-[320px] items-center rounded-lg border border-input bg-background px-3 py-2">
+
+        {/* Search */}
+        <form
+          onSubmit={handleSearchSubmit}
+          className="relative hidden sm:flex w-[320px] items-center rounded-lg border border-input bg-background px-3 py-2"
+        >
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <input
+          <Input
             type="search"
-            placeholder="Search reports, locations…"
+            value={search}
+            onChange={(event) => handleSearchChange(event.target.value)}
+            placeholder="Search reports, users, locations…"
             className="flex h-8 w-full rounded-lg bg-transparent px-3 py-2 pl-9 text-sm outline-none transition-all placeholder:text-muted-foreground"
+            aria-label="Search reports, users, and locations"
           />
-        </div>
+        </form>
       </div>
 
       <div className="flex items-center gap-2">
+
+        {/* Mobile search */}
         <button
-          className="relative rounded-lg p-1.5 hover:bg-accent transition-colors"
-          aria-label="Notifications"
+          type="button"
+          onClick={() => setMobileSearchOpen((open) => !open)}
+          aria-label={mobileSearchOpen ? 'Close search' : 'Open search'}
+          aria-expanded={mobileSearchOpen}
+          className="rounded-lg p-1.5 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 sm:hidden"
         >
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-primary-foreground border-2 border-background">
-            <span className="px-[0.5px]">9+</span>
-          </span>
+          <span className="sr-only">{mobileSearchOpen ? 'Close search' : 'Open search'}</span>
+          {mobileSearchOpen ? <HelpCircle className="h-5 w-5" /> : <Search className="h-5 w-5" />}
         </button>
-        <button
-          className="relative rounded-lg p-1.5 hover:bg-accent transition-colors"
-          aria-label="Messages"
-        >
-          <MessageCircle className="h-5 w-5" />
-        </button>
-        <button
-          className="relative rounded-lg p-1.5 hover:bg-accent transition-colors"
-          aria-label="Help"
+
+        {/* Theme toggle */}
+        <ThemeToggle showLabel={false} className="hidden sm:block" />
+
+        {/* Notifications */}
+        <NotificationDropdown />
+
+        {/* Help — links to the existing design-system documentation page */}
+        <Link
+          href="/design-system"
+          aria-label="Help and documentation"
+          className="hidden rounded-lg p-1.5 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 sm:flex"
         >
           <HelpCircle className="h-5 w-5" />
-        </button>
-        <ThemeToggle className="px-4" />
+        </Link>
+
+        {/* User profile dropdown — displays name, email, role, and avatar */}
         <UserProfileDropdown user={user} onLogout={onLogout} />
       </div>
+
+      {/* Mobile search input */}
+      {mobileSearchOpen && (
+        <div className="border-t border-input p-3 sm:hidden">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="flex items-center gap-2 rounded-xl border border-input bg-background px-3"
+          >
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              value={search}
+              onChange={(event) => handleSearchChange(event.target.value)}
+              placeholder="Search reports, users, locations…"
+              className="h-9 w-full rounded-lg bg-transparent px-3 py-2 pl-8 text-sm outline-none transition-all placeholder:text-muted-foreground"
+              aria-label="Search reports, users, and locations"
+            />
+          </form>
+        </div>
+      )}
     </header>
   );
 }
+
+/** Backward-compatible alias. */
+export const Navbar = AppHeader;

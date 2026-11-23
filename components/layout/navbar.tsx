@@ -2,71 +2,209 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/utils/cn';
-import { Search, Bell, MessageCircle, HelpCircle } from 'lucide-react';
+import {
+  Search,
+  MessageCircle,
+  HelpCircle,
+  Menu,
+  ChevronDown,
+  User,
+  LogOut,
+  X,
+} from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { NotificationDropdown } from '@/components/ui/notification-dropdown';
 
 interface NavbarProps {
   onSidebarToggle?: () => void;
+  userName?: string;
+  userRole?: string;
+  userImage?: string;
+  onLogout?: () => void;
+  onSearch?: (value: string) => void;
+  notificationCount?: number;
+  messageCount?: number;
 }
 
-export function Navbar({ onSidebarToggle }: NavbarProps = {}) {
-  const pathname = usePathname();
+export function Navbar({
+  onSidebarToggle,
+  userName = 'Admin',
+  userRole = 'Administrator',
+  userImage,
+  onLogout,
+  onSearch,
+  messageCount = 0,
+}: NavbarProps) {
+  const [profileOpen, setProfileOpen] = React.useState(false);
+  const [search, setSearch] = React.useState('');
+  const [mobileSearchOpen, setMobileSearchOpen] = React.useState(false);
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    onSearch?.(value);
+  };
+
+  const initials = userName
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between px-4 border-b border-input bg-card shadow-sm">
-      <div className="flex items-center gap-4">
-        <button
-          className="rounded-lg p-1.5 hover:bg-accent transition-colors"
-          onClick={onSidebarToggle}
-        >
-          <span className="sr-only">Toggle sidebar</span>
-          <div className="relative flex -left-1 h-4 w-4">
-            <span className="absolute block left-1 top-1 rounded-full bg-primary pb-0.75" />
-            <span className="absolute block left-2 top-2 rounded-full bg-primary pb-0.75" />
-            <span className="relative block rounded-full bg-muted pb-0.75" />
-          </div>
-        </button>
+    <header className="sticky top-0 z-30 w-full border-b border-border bg-card/90 shadow-sm backdrop-blur-xl">
+      <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
 
-        <div className="relative hidden sm:flex w-[320px] items-center rounded-lg border border-input bg-background px-3 py-2">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <input
-            type="search"
-            placeholder="Search reports, users, locations…"
-            className="flex h-8 w-full rounded-lg bg-transparent px-3 py-2 pl-9 text-sm outline-none transition-all placeholder:text-muted-foreground"
-          />
+        {/* Left Section */}
+        <div className="flex min-w-0 items-center gap-3">
+
+          <button
+            type="button"
+            onClick={onSidebarToggle}
+            aria-label="Toggle sidebar"
+            className="rounded-xl p-2 transition-colors hover:bg-accent"
+          >
+            <Menu className="h-5 w-5 text-foreground" />
+          </button>
+
+          <div className="hidden w-[280px] items-center gap-2 rounded-xl border border-border bg-background px-3 sm:flex">
+            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search reports, users..."
+              className="h-10 w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+              aria-label="Search reports and users"
+            />
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+
+          {/* Mobile Search */}
+          <button
+            type="button"
+            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+            className="rounded-xl p-2 transition-colors hover:bg-accent sm:hidden"
+            aria-label="Toggle search"
+          >
+            {mobileSearchOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Search className="h-5 w-5" />
+            )}
+          </button>
+
+          {/* Theme Toggle — uses the shared ThemeProvider-backed toggle */}
+          <ThemeToggle showLabel={false} />
+
+          {/* Notifications — in-app dropdown (no external route) */}
+          <NotificationDropdown />
+
+          {/* Messages */}
+          {messageCount > 0 && (
+            <button
+              type="button"
+              aria-label="Messages"
+              className="relative rounded-xl p-2 transition-colors hover:bg-accent"
+            >
+              <MessageCircle className="h-5 w-5" />
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+                {messageCount > 99 ? '99+' : messageCount}
+              </span>
+            </button>
+          )}
+
+          {/* Help — links to the existing design-system documentation page */}
+          <Link
+            href="/design-system"
+            aria-label="Help and documentation"
+            className="hidden rounded-xl p-2 transition-colors hover:bg-accent sm:flex"
+          >
+            <HelpCircle className="h-5 w-5" />
+          </Link>
+
+          {/* Profile */}
+          <div className="relative ml-2 border-l border-border pl-3">
+
+            <button
+              type="button"
+              onClick={() => setProfileOpen(!profileOpen)}
+              aria-expanded={profileOpen}
+              className="flex items-center gap-2 rounded-xl p-1.5 transition-colors hover:bg-accent"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                {userImage ? (
+                  <img
+                    src={userImage}
+                    alt={userName}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  initials
+                )}
+              </div>
+
+              <div className="hidden text-left sm:block">
+                <p className="text-sm font-semibold text-foreground">
+                  {userName}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {userRole}
+                </p>
+              </div>
+
+              <ChevronDown className="hidden h-4 w-4 text-muted-foreground sm:block" />
+            </button>
+
+            {profileOpen && (
+              <div className="absolute right-0 top-14 z-50 w-52 rounded-xl border border-border bg-card p-2 shadow-xl">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setProfileOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-accent"
+                >
+                  <User className="h-4 w-4" />
+                  Dashboard
+                </Link>
+
+                <div className="my-1 border-t border-border" />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProfileOpen(false);
+                    onLogout?.();
+                  }}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive hover:bg-destructive/10"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <button className="relative rounded-lg p-1.5 hover:bg-accent transition-colors">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-danger px-[6px] py-[2px] text-[10px] text-primary-foreground">
-            <span className="px-[0.5px]">9+</span>
-          </span>
-        </button>
-        <button className="relative rounded-lg p-1.5 hover:bg-accent transition-colors">
-          <MessageCircle className="h-5 w-5" />
-          <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-primary px-[6px] py-[2px] text-[10px] text-primary-foreground">
-            <span className="px-[0.5px]">2</span>
-          </span>
-        </button>
-        <button className="relative rounded-lg p-1.5 hover:bg-accent transition-colors">
-          <HelpCircle className="h-5 w-5" />
-        </button>
-
-        <div className="flex items-center gap-2 pl-2">
-          <div className="hidden sm:flex items-center gap-3 border-l border-input pl-4">
-            <div className="text-right">
-              <p className="text-sm font-semibold text-foreground">Jane Admin</p>
-              <p className="text-xs text-muted-foreground">Administrator</p>
-            </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
-              <span className="text-xs font-bold">JA</span>
-            </div>
+      {/* Mobile Search Input */}
+      {mobileSearchOpen && (
+        <div className="border-t border-border p-3 sm:hidden">
+          <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search reports, users..."
+              className="h-10 w-full bg-transparent text-sm outline-none"
+            />
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }
