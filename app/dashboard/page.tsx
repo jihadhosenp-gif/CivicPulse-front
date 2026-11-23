@@ -40,45 +40,57 @@ export default function CitizenDashboardPage() {
   const { user, stats, reports, activities, notifications } = data;
 
   return (
-    <div className="space-y-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-8"
+    >
       {/* Top bar */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Overview</h1>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">Overview</h1>
           <p className="text-sm text-muted-foreground">Your civic activity at a glance</p>
         </div>
         <NotificationPanelWithState notifications={notifications} />
       </div>
 
       {/* Hero / welcome */}
-      <WelcomeHeader user={user} stats={stats} />
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="w-full"
+      >
+        <WelcomeHeader user={user} stats={stats} />
+      </motion.div>
 
       {/* Statistic cards */}
       <StatsGrid stats={stats} />
 
       {/* Reports + activity */}
-      <div className="grid gap-4 lg:grid-cols-7">
-        <div className="lg:col-span-5">
+      <div className="grid gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-7">
           <RecentReports
             reports={reports}
             maxItems={5}
-            onReportIssue={() => console.log('Report a new issue')}
-            onViewAll={() => console.log('View all reports')}
-            onViewReport={(report) => console.log('View report', report.id)}
+            onReportIssue={() => {}}
+            onViewAll={() => {}}
+            onViewReport={(report) => {}}
           />
         </div>
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-5">
           <ActivityTimeline
             activities={activities}
             maxItems={6}
-            onViewAll={() => console.log('View all activity')}
+            onViewAll={() => {}}
           />
         </div>
       </div>
 
       {/* Floating quick actions */}
       <QuickReportButton />
-    </div>
+    </motion.div>
   );
 }
 

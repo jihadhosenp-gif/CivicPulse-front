@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ActivityEvent } from '@/data/mock-dashboard';
+import type { ActivityEvent } from '@/data/mock-dashboard';
 
 const activityIcons: Record<string, React.ReactNode> = {
   FileText: <FileText className="h-4 w-4" />,
@@ -73,7 +73,7 @@ export function ActivityTimeline({
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="rounded-[14px] border border-input bg-card shadow-sm">
         <CardHeader>
           <CardTitle>Activity Timeline</CardTitle>
         </CardHeader>
@@ -86,7 +86,7 @@ export function ActivityTimeline({
 
   if (displayActivities.length === 0) {
     return (
-      <Card>
+      <Card className="rounded-[14px] border border-input bg-card shadow-sm">
         <CardContent className="py-12 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-muted/50">
             <Clock className="h-8 w-8 text-muted-foreground/50" />
@@ -99,19 +99,18 @@ export function ActivityTimeline({
   }
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card className="rounded-[14px] border border-input bg-card shadow-sm">
+      <CardHeader className="flex flex-row items-center justify-between pb-4">
         <CardTitle>Activity Timeline</CardTitle>
         {onViewAll && (
-          <Button variant="ghost" size="sm" onClick={onViewAll}>
+          <Button variant="ghost" size="sm" onClick={onViewAll} className="rounded-[9px] h-[44px]">
             View All
           </Button>
         )}
       </CardHeader>
       <CardContent className="p-0">
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-input/50" />
+          <div className="absolute left-3.5 top-0 bottom-0 w-0.5 bg-input/40" />
           
           <AnimatePresence mode="popLayout">
             {displayActivities.map((activity, index) => (
@@ -120,17 +119,15 @@ export function ActivityTimeline({
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                transition={{ delay: index * 0.05, duration: 0.3 }}
+                transition={{ delay: index * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="relative flex gap-4 px-4 py-4 last:pb-0"
               >
-                {/* Timeline dot */}
                 <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background border border-input flex-shrink-0 z-10">
-                  <div className={cn('flex h-8 w-8 items-center justify-center rounded-full', activityColors[activity.type])}>
+                  <div className={cn('flex h-8 w-8 items-center justify-center rounded-full shadow-sm', activityColors[activity.type])}>
                     {activityIcons[activity.icon] || activityIcons.FileText}
                   </div>
                 </div>
                 
-                {/* Content */}
                 <div className="flex-1 min-w-0 pt-0.5">
                   <div className="flex items-center gap-2">
                     <p className="font-medium text-foreground">{activity.title}</p>
@@ -139,7 +136,7 @@ export function ActivityTimeline({
                   <p className="mt-1 text-sm text-muted-foreground">{activity.description}</p>
                   
                   {activity.reportTitle && (
-                    <button className="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors">
+                    <button className="mt-2 inline-flex items-center gap-1 text-xs text-accent hover:text-accent/80 transition-colors">
                       <MapPin className="h-3 w-3" />
                       View report: {activity.reportTitle}
                     </button>
@@ -151,8 +148,8 @@ export function ActivityTimeline({
         </div>
         
         {activities.length > maxItems && onViewAll && (
-          <div className="mt-4 pt-4 border-t border-input text-center">
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full">
+          <div className="mt-4 pt-4 border-t border-input/50 text-center">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full rounded-[9px] h-[44px]">
               View {activities.length - maxItems} more activities
             </Button>
           </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   MapPin,
   Clock,
@@ -62,9 +62,28 @@ export function RecentReports({
 }: RecentReportsProps) {
   const displayReports = reports.slice(0, maxItems);
 
+  if (isLoading) {
+    return (
+      <Card className="flex h-full flex-col">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle className="text-lg">Recent Reports</CardTitle>
+          {onViewAll && (
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="gap-1 text-muted-foreground hover:text-foreground">
+              View All
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          )}
+        </CardHeader>
+        <CardContent>
+          <ReportsTableSkeleton rows={4} />
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="flex h-full flex-col">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center gap-2">
           <CardTitle className="text-lg">Recent Reports</CardTitle>
           {reports.length > 0 && (
@@ -81,17 +100,13 @@ export function RecentReports({
         )}
       </CardHeader>
 
-      {isLoading ? (
-        <CardContent>
-          <ReportsTableSkeleton rows={4} />
-        </CardContent>
-      ) : displayReports.length === 0 ? (
+      {displayReports.length === 0 ? (
         <CardContent className="flex flex-1 flex-col items-center justify-center py-16 text-center">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="relative mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5"
+            className="relative mb-5 flex h-20 w-20 items-center justify-center rounded-[14px] bg-gradient-to-br from-primary/15 to-primary/5"
           >
             <FileText className="h-9 w-9 text-primary" />
             <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-card shadow-sm ring-1 ring-input">
@@ -104,7 +119,7 @@ export function RecentReports({
             community know.
           </p>
           {onReportIssue && (
-            <Button onClick={onReportIssue} className="mt-6 gap-2">
+            <Button onClick={onReportIssue} className="mt-6 gap-2 rounded-[9px] h-[44px]">
               <MapPin className="h-4 w-4" />
               Report Your First Issue
             </Button>
@@ -112,21 +127,21 @@ export function RecentReports({
         </CardContent>
       ) : (
         <CardContent className="flex-1 p-0">
-          <AnimatePresence initial={false}>
+          <div className="divide-y divide-input/60">
             {displayReports.map((report, index) => (
-              <motion.button
+              <motion.div
                 key={report.id}
-                type="button"
-                onClick={() => onViewReport?.(report)}
                 initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 16 }}
                 transition={{ delay: index * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                onClick={() => onViewReport?.(report)}
                 className={cn(
-                  'group flex w-full items-center gap-3 border-b border-input/60 px-4 py-4 text-left transition-colors last:border-0 hover:bg-accent/60 sm:px-6'
+                  'group flex w-full cursor-pointer items-center gap-4 px-6 py-4 text-left transition-colors last:border-0 hover:bg-accent/50',
+                  'rounded-none'
                 )}
               >
-                <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[9px] bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
                   {categoryIcons[report.category] ?? <FileText className="h-5 w-5" />}
                 </span>
 
@@ -155,9 +170,9 @@ export function RecentReports({
                 </div>
 
                 <ChevronRight className="h-5 w-5 flex-shrink-0 text-muted-foreground/60 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-primary" />
-              </motion.button>
+              </motion.div>
             ))}
-          </AnimatePresence>
+          </div>
         </CardContent>
       )}
     </Card>

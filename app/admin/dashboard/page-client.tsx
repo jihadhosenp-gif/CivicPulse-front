@@ -168,11 +168,11 @@ export default function AdminDashboardPage() {
 
   if (error) {
     return (
-      <div className="rounded-2xl border border-input bg-card p-6 sm:p-8 text-center">
+      <div className="rounded-[14px] border border-input bg-card p-6 sm:p-8 text-center">
         <AlertCircle className="mx-auto h-12 w-12 text-danger mb-4" />
         <h3 className="text-lg font-semibold text-foreground">Unable to load dashboard</h3>
         <p className="mt-2 text-sm text-muted-foreground">{error}</p>
-        <Button onClick={() => window.location.reload()} className="mt-6">
+        <Button onClick={() => window.location.reload()} className="mt-6 rounded-[9px] h-[44px]">
           Try Again
         </Button>
       </div>
@@ -194,11 +194,11 @@ export default function AdminDashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" size="sm" className="gap-2 rounded-[9px] h-[44px]">
             <FileText className="h-4 w-4" />
             Export Reports
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2 rounded-[9px] h-[44px]">
             <Activity className="h-4 w-4" />
             View Activity
           </Button>
@@ -306,7 +306,7 @@ export default function AdminDashboardPage() {
                       >
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-[9px] bg-primary/10 text-primary">
                               <FileText className="h-4 w-4" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -359,7 +359,7 @@ export default function AdminDashboardPage() {
               <CardTitle className="text-lg">Report Locations</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="h-[320px] rounded-xl border border-input overflow-hidden">
+              <div className="h-[320px] rounded-[14px] border border-input overflow-hidden">
                 <AdminMapOverview reports={reports.slice(0, 20)} />
               </div>
               {reports.length === 0 && (
@@ -381,15 +381,15 @@ export default function AdminDashboardPage() {
           transition={{ delay: 0.5 }}
           className="grid gap-4 sm:grid-cols-3 text-center"
         >
-          <div className="rounded-xl border border-input bg-secondary p-4">
+          <div className="rounded-[14px] border border-input bg-secondary p-4">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Pending</div>
             <div className="mt-1 text-2xl font-bold text-warning">{pendingReports}</div>
           </div>
-          <div className="rounded-xl border border-input bg-secondary p-4">
+          <div className="rounded-[14px] border border-input bg-secondary p-4">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">In Progress</div>
             <div className="mt-1 text-2xl font-bold text-primary">{inProgressReports}</div>
           </div>
-          <div className="rounded-xl border border-input bg-secondary p-4">
+          <div className="rounded-[14px] border border-input bg-secondary p-4">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Resolved</div>
             <div className="mt-1 text-2xl font-bold text-success">{resolvedReports}</div>
           </div>

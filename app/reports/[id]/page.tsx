@@ -91,13 +91,13 @@ function InfoTile({ icon, label, children, className, iconClassName }: InfoTileP
   return (
     <div
       className={cn(
-        'flex items-start gap-3 rounded-lg border border-input bg-card p-4 transition-colors hover:bg-accent/40',
+        'flex items-start gap-3 rounded-[14px] border border-input bg-card p-4 transition-colors hover:bg-accent/40',
         className
       )}
     >
       <div
         className={cn(
-          'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary',
+          'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[9px] bg-primary/10 text-primary',
           iconClassName
         )}
       >
@@ -154,10 +154,10 @@ function AIAnalysisCard({ report }: { report: Report }) {
       <CardContent className="space-y-4">
         {/* Severity + Priority row */}
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className={cn('flex items-center gap-3 rounded-lg border border-input bg-card p-4 ring-1', sev.ring)}>
+          <div className={cn('flex items-center gap-3 rounded-[14px] border border-input bg-card p-4 ring-1', sev.ring)}>
             <div
               className={cn(
-                'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg',
+                'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[9px]',
                 sev.badge
               )}
             >
@@ -171,8 +171,8 @@ function AIAnalysisCard({ report }: { report: Report }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 rounded-lg border border-input bg-card p-4">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-warning/10 text-warning">
+          <div className="flex items-center gap-3 rounded-[14px] border border-input bg-card p-4">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[9px] bg-warning/10 text-warning">
               <ListChecks className="h-5 w-5" />
             </div>
             <div>
@@ -204,7 +204,7 @@ function AIAnalysisCard({ report }: { report: Report }) {
 
         {/* Bengali summary */}
         {ai.bengaliSummary && (
-          <div className="rounded-lg border border-input bg-primary/5 p-4">
+          <div className="rounded-[14px] border border-input bg-primary/5 p-4">
             <p className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-primary">
               <Languages className="h-3.5 w-3.5" />
               AI Bengali Summary
@@ -214,7 +214,7 @@ function AIAnalysisCard({ report }: { report: Report }) {
         )}
 
         {/* Recommended action */}
-        <div className="rounded-lg border border-input bg-success/5 p-4">
+        <div className="rounded-[14px] border border-input bg-success/5 p-4">
           <p className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-success">
             <ListChecks className="h-3.5 w-3.5" />
             AI Recommended Action
@@ -355,7 +355,7 @@ function ReportTimeline({ report }: { report: Report }) {
                   <div className="relative z-10 flex-shrink-0">
                     <div
                       className={cn(
-                        'flex h-9 w-9 items-center justify-center rounded-full border border-input bg-background',
+                        'flex h-9 w-9 items-center justify-center rounded-[9px] border border-input bg-background',
                         style.dot
                       )}
                     >
@@ -390,42 +390,42 @@ function ReportTimeline({ report }: { report: Report }) {
 function ReportDetailSkeleton() {
   return (
     <CitizenLayout>
-      <div className="space-y-6 animate-pulse">
-        <div className="h-9 w-40 rounded-lg bg-muted" />
+        <div className="space-y-6 animate-pulse">
+        <div className="h-9 w-40 rounded-[14px] bg-muted" />
         <div className="grid gap-4 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-4">
-            <div className="rounded-xl border border-input bg-card p-6">
-              <div className="h-8 w-2/3 rounded bg-muted" />
-              <div className="mt-3 h-4 w-1/2 rounded bg-muted" />
+            <div className="rounded-[14px] border border-input bg-card p-6">
+              <div className="h-8 w-2/3 rounded-[9px] bg-muted" />
+              <div className="mt-3 h-4 w-1/2 rounded-[9px] bg-muted" />
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="aspect-video rounded-lg bg-muted" />
+                <div key={i} className="aspect-video rounded-[14px] bg-muted" />
               ))}
             </div>
-            <div className="rounded-xl border border-input bg-card p-6">
-              <div className="h-4 w-1/3 rounded bg-muted" />
+            <div className="rounded-[14px] border border-input bg-card p-6">
+              <div className="h-4 w-1/3 rounded-[9px] bg-muted" />
               <div className="mt-3 space-y-2">
-                <div className="h-3 w-full rounded bg-muted" />
-                <div className="h-3 w-5/6 rounded bg-muted" />
-                <div className="h-3 w-4/6 rounded bg-muted" />
+                <div className="h-3 w-full rounded-[9px] bg-muted" />
+                <div className="h-3 w-5/6 rounded-[9px] bg-muted" />
+                <div className="h-3 w-4/6 rounded-[9px] bg-muted" />
               </div>
             </div>
           </div>
           <div className="space-y-4">
-            <div className="rounded-xl border border-input bg-card p-6">
-              <div className="h-4 w-1/2 rounded bg-muted" />
+            <div className="rounded-[14px] border border-input bg-card p-6">
+              <div className="h-4 w-1/2 rounded-[9px] bg-muted" />
               <div className="mt-4 space-y-3">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-14 rounded-lg bg-muted" />
+                  <div key={i} className="h-14 rounded-[14px] bg-muted" />
                 ))}
               </div>
             </div>
-            <div className="rounded-xl border border-input bg-card p-6">
-              <div className="h-4 w-1/3 rounded bg-muted" />
+            <div className="rounded-[14px] border border-input bg-card p-6">
+              <div className="h-4 w-1/3 rounded-[9px] bg-muted" />
               <div className="mt-4 space-y-3">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="h-12 rounded bg-muted" />
+                  <div key={i} className="h-12 rounded-[14px] bg-muted" />
                 ))}
               </div>
             </div>
@@ -444,21 +444,21 @@ function ReportErrorState({ message, onRetry }: { message: string; onRetry: () =
   return (
     <CitizenLayout>
       <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-danger/10">
-          <XCircle className="h-10 w-10 text-danger" />
-        </div>
-        <h2 className="mt-6 text-xl font-semibold text-foreground">Unable to load report</h2>
-        <p className="mt-2 max-w-md text-sm text-muted-foreground">{message}</p>
-        <div className="mt-6 flex gap-3">
-          <Button variant="outline" onClick={() => routerBackSafe()}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Go back
-          </Button>
-          <Button onClick={onRetry}>
-            <RefreshCw className="mr-2 h-4 w-4" />
-            Try again
-          </Button>
-        </div>
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-danger/10">
+            <XCircle className="h-10 w-10 text-danger" />
+          </div>
+          <h2 className="mt-6 text-xl font-semibold text-foreground">Unable to load report</h2>
+          <p className="mt-2 max-w-md text-sm text-muted-foreground">{message}</p>
+          <div className="mt-6 flex gap-3">
+            <Button variant="outline" onClick={() => routerBackSafe()} className="rounded-[9px] h-[44px]">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Go back
+            </Button>
+            <Button onClick={onRetry} className="rounded-[9px] h-[44px]">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Try again
+            </Button>
+          </div>
       </div>
     </CitizenLayout>
   );
@@ -536,7 +536,7 @@ export default function ReportDetailsPage() {
             The report you are looking for does not exist or has been removed.
           </p>
           <div className="mt-6">
-            <Button variant="outline" onClick={handleRetry}>
+            <Button variant="outline" onClick={handleRetry} className="rounded-[9px] h-[44px]">
               <RefreshCw className="mr-2 h-4 w-4" />
               Reload
             </Button>

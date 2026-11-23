@@ -35,37 +35,38 @@ const socialLinks = [
   { name: 'LinkedIn', href: 'https://linkedin.com', icon: <Linkedin className="h-5 w-5" /> },
 ];
 
+// Fixed premium dark footer per spec: bg #0F172A, headings #F8FAFC, body #CBD5E1, divider #334155.
 export function Footer({ className }: FooterProps = {}) {
   return (
     <footer
-      className={cn('border-t border-input bg-background', className)}
+      className={cn('border-t border-[#334155] bg-[#0F172A]', className)}
     >
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-elegant">
+              <div className="flex h-8 w-8 items-center justify-center rounded-[9px] bg-[#2478D4] text-[#0F172A] shadow-elegant">
                 <span className="text-sm font-bold tracking-tight">C</span>
               </div>
-              <span className="font-bold text-xl tracking-tight text-foreground">
-                CivicPulse<span className="text-primary">AI</span>
+              <span className="font-bold text-xl tracking-tight text-[#F8FAFC]">
+                CivicPulse<span className="text-[#2478D4]">AI</span>
               </span>
             </div>
-            <p className="text-muted-foreground max-w-sm leading-relaxed">
+            <p className="text-[#CBD5E1] max-w-sm leading-relaxed">
               AI-powered civic issue reporting and management. Building smarter communities,
               one report at a time.
             </p>
             <div className="mt-6 flex gap-4">
               <a
                 href="mailto:hello@civicpulse.ai"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="flex items-center gap-2 text-sm text-[#CBD5E1] hover:text-[#2478D4] transition-colors"
               >
                 <Mail className="h-4 w-4" />
                 hello@civicpulse.ai
               </a>
               <a
                 href="tel:+8801XXXXXXXX"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="flex items-center gap-2 text-sm text-[#CBD5E1] hover:text-[#2478D4] transition-colors"
               >
                 <Phone className="h-4 w-4" />
                 +880 1XXXXXXXX
@@ -74,15 +75,15 @@ export function Footer({ className }: FooterProps = {}) {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-6 uppercase tracking-wider">
+            <h4 className="text-sm font-semibold text-[#F8FAFC] mb-6 uppercase tracking-wider">
               Product
             </h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <ul className="space-y-3 text-sm text-[#CBD5E1]">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="hover:text-primary transition-colors"
+                    className="hover:text-[#2478D4] transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -92,15 +93,15 @@ export function Footer({ className }: FooterProps = {}) {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-6 uppercase tracking-wider">
+            <h4 className="text-sm font-semibold text-[#F8FAFC] mb-6 uppercase tracking-wider">
               Company
             </h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <ul className="space-y-3 text-sm text-[#CBD5E1]">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="hover:text-primary transition-colors"
+                    className="hover:text-[#2478D4] transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -110,15 +111,15 @@ export function Footer({ className }: FooterProps = {}) {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-6 uppercase tracking-wider">
+            <h4 className="text-sm font-semibold text-[#F8FAFC] mb-6 uppercase tracking-wider">
               Resources
             </h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <ul className="space-y-3 text-sm text-[#CBD5E1]">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="hover:text-primary transition-colors"
+                    className="hover:text-[#2478D4] transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -128,8 +129,8 @@ export function Footer({ className }: FooterProps = {}) {
           </div>
         </div>
 
-        <div className="border-t border-input pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
+        <div className="border-t border-[#334155] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-[#CBD5E1]">
             {'© '} {new Date().getFullYear()} CivicPulse AI. All rights reserved.
           </p>
           <div className="flex gap-4">
@@ -139,7 +140,7 @@ export function Footer({ className }: FooterProps = {}) {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-[#CBD5E1] hover:text-[#2478D4] transition-colors"
                 aria-label={name}
               >
                 {icon}

@@ -156,7 +156,7 @@ export default function ResetPasswordPageContent() {
               {errors.confirmPassword && <p className="text-xs text-danger">{errors.confirmPassword}</p>}
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full rounded-[9px] h-[44px]" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -175,7 +175,7 @@ export default function ResetPasswordPageContent() {
             <p className="text-sm text-muted-foreground">
               You can now sign in with your new password.
             </p>
-            <Button className="w-full" onClick={() => router.push("/login")}>
+            <Button className="w-full rounded-[9px] h-[44px]" onClick={() => router.push("/login")}>
               Sign in
             </Button>
           </div>

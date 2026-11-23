@@ -358,7 +358,7 @@ export default function IssueManagementPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" size="sm" className="gap-2 rounded-[9px] h-[44px]">
             <FileText className="h-4 w-4" />
             Export CSV
           </Button>

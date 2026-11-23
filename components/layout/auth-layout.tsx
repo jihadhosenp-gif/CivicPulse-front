@@ -38,7 +38,7 @@ export function AuthLayout({
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center justify-center gap-2 mb-6"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[9px] bg-primary text-primary-foreground shadow-lg">
               <span className="text-sm font-bold tracking-tight">C</span>
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">
@@ -69,7 +69,7 @@ export function AuthLayout({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-card rounded-3xl border border-input shadow-xl p-8 sm:p-10"
+          className="bg-card rounded-[14px] border border-input shadow-xl p-8 sm:p-10"
         >
           {children}
         </motion.div>
@@ -170,7 +170,7 @@ export function AuthInput({
           value={value}
           onChange={onChange}
           className={cn(
-            'flex h-10 w-full rounded-xl border border-input bg-background px-4 py-2.5 pl-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 transition-all',
+            'flex h-10 w-full rounded-[9px] border border-input bg-background px-4 py-2.5 pl-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 transition-all',
             error && 'border-danger',
             className
           )}

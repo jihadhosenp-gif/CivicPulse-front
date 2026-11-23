@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full rounded-[9px] h-[44px]" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
               The link will expire in 1 hour.
             </p>
 
-            <Button variant="outline" className="w-full" onClick={handleResend} disabled={isLoading}>
+            <Button variant="outline" className="w-full rounded-[9px] h-[44px]" onClick={handleResend} disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Sun, Moon, MapPin, Target, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 interface WelcomeHeaderProps {
   user: {
@@ -43,21 +44,21 @@ export function WelcomeHeader({ user, stats }: WelcomeHeaderProps) {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="relative rounded-2xl border border-input bg-gradient-to-br from-card via-background to-card p-6 sm:p-8 overflow-hidden"
+      className="relative overflow-hidden rounded-[14px] border border-input bg-card p-6 sm:p-8 shadow-sm"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
       <div className="absolute top-4 right-4 flex items-center gap-2">
-        <div className="hidden sm:flex items-center gap-2 rounded-lg bg-background/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+        <div className="hidden sm:flex items-center gap-2 rounded-lg bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary">
           <Target className="h-3 w-3" />
           <span>{stats?.resolutionRate ?? 85}% Resolution Rate</span>
         </div>
-        <div className="hidden sm:flex items-center gap-2 rounded-lg bg-background/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+        <div className="hidden sm:flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent">
           <Award className="h-3 w-3" />
           <span>{stats?.avgResponseTime ?? '4.2h'} Avg Response</span>
         </div>
       </div>
 
-      <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-6">
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src={user.avatar} alt={user.name} />
@@ -76,12 +77,12 @@ export function WelcomeHeader({ user, stats }: WelcomeHeaderProps) {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button variant="outline" className="w-full sm:w-auto gap-2">
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <Button variant="outline" className="w-full sm:w-auto gap-2 rounded-[9px] h-[44px]">
             <MapPin className="h-4 w-4" />
             <span>Report an Issue</span>
           </Button>
-          <Button className="w-full sm:w-auto gap-2">
+          <Button className="w-full sm:w-auto gap-2 rounded-[9px] h-[44px]">
             <Target className="h-4 w-4" />
             <span>Quick Report</span>
           </Button>

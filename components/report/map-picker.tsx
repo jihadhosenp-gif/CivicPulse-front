@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MapPin, Crosshair, Search, Loader2, AlertCircle } from 'lucide-react';
+import { MapPin, Crosshair, Search, Loader2, AlertCircle, Trash2, Locate, Check } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -272,88 +272,112 @@ export function MapPicker({
     setCoordError(null);
   };
 
+  const hasPoint = !!value;
+
   return (
     <div className={cn('space-y-3', className)}>
-      {/* Map canvas */}
-      <div
-        className={cn(
-          'relative overflow-hidden rounded-lg border border-input bg-muted',
-          // Subtle grid backdrop shown only while the map is loading. This lives on
-          // the React-owned shell, NOT on the Leaflet container: Leaflet adds the
-          // `leaflet-container` class to the inner element imperatively, and toggling
-          // that element's className on re-render would strip Leaflet's class. Without
-          // it, Leaflet's `max-width:none` reset stops applying and Tailwind's
-          // `img { max-width:100% }` collapses every tile to 0px wide (blank map).
-          status === 'loading' && 'map-grid'
-        )}
-      >
-        <div
-          ref={containerRef}
-          // Keep this className static so React never rewrites it after Leaflet
-          // initialises (a changed className would remove `leaflet-container`).
-          className="h-[280px] w-full"
-          aria-label="Map location picker"
-        />
-
-        {status === 'loading' && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/40 backdrop-blur-[1px]">
-            <div className="flex items-center gap-2 rounded-full bg-card px-4 py-2 text-sm text-muted-foreground shadow-sm">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Loading map…
-            </div>
+      {/* Map card */}
+      <div className="overflow-hidden rounded-xl border border-input bg-muted shadow-soft">
+        {/* Toolbar */}
+        <div className="flex items-center justify-between gap-2 border-b border-input bg-card px-3 py-2.5">
+          <div className="flex min-w-0 items-center gap-2">
+            <MapPin className="h-4 w-4 flex-shrink-0 text-primary" />
+            <span className="truncate text-sm font-medium text-foreground">
+              {hasPoint ? 'Location selected' : 'Select a location'}
+            </span>
           </div>
-        )}
-
-        {status === 'error' && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted px-6 text-center">
-            <AlertCircle className="h-6 w-6 text-warning" />
-            <p className="text-sm font-medium text-foreground">Map unavailable</p>
-            <p className="max-w-xs text-xs text-muted-foreground">
-              The interactive map could not load. You can still enter the
-              coordinates manually below.
-            </p>
-          </div>
-        )}
-
-        {status === 'ready' && (
-          <div className="absolute right-3 top-3 z-[1000] flex flex-col gap-2">
+          <div className="flex flex-shrink-0 items-center gap-1.5">
             <Button
               type="button"
               variant="outline"
-              size="icon"
+              size="iconSm"
               onClick={recenter}
-              className="h-9 w-9 shadow-sm"
-              aria-label="Recenter map"
-              disabled={disabled}
+              className="h-8 w-8"
+              aria-label="Recenter map on Bangladesh"
+              disabled={disabled || status !== 'ready'}
             >
-              <Crosshair className="h-4 w-4" />
+              <Locate className="h-4 w-4" />
             </Button>
-            {value && (
+            {hasPoint && (
               <Button
                 type="button"
                 variant="softDestructive"
-                size="icon"
+                size="iconSm"
                 onClick={clearPoint}
-                className="h-9 w-9 shadow-sm"
+                className="h-8 w-8"
                 aria-label="Clear selected location"
                 disabled={disabled}
               >
-                <MapPin className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" />
               </Button>
             )}
           </div>
-        )}
+        </div>
+
+        {/* Map canvas */}
+        <div
+          className={cn(
+            'relative',
+            // Subtle grid backdrop shown only while the map is loading. This lives on
+            // the React-owned shell, NOT on the Leaflet container: Leaflet adds the
+            // `leaflet-container` class to the inner element imperatively, and toggling
+            // that element's className on re-render would strip Leaflet's class. Without
+            // it, Leaflet's `max-width:none` reset stops applying and Tailwind's
+            // `img { max-width:100% }` collapses every tile to 0px wide (blank map).
+            status === 'loading' && 'map-grid'
+          )}
+        >
+          <div
+            ref={containerRef}
+            // Keep this className static so React never rewrites it after Leaflet
+            // initialises (a changed className would remove `leaflet-container`).
+            className="h-[260px] w-full sm:h-[320px]"
+            aria-label="Map location picker"
+          />
+
+          {status === 'loading' && (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/40 backdrop-blur-[1px]">
+              <div className="flex items-center gap-2 rounded-full bg-card px-4 py-2 text-sm text-muted-foreground shadow-sm">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Loading map…
+              </div>
+            </div>
+          )}
+
+          {status === 'error' && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted px-6 text-center">
+              <AlertCircle className="h-6 w-6 text-warning" />
+              <p className="text-sm font-medium text-foreground">Map unavailable</p>
+              <p className="max-w-xs text-xs text-muted-foreground">
+                The interactive map could not load. You can still enter the
+                coordinates manually below.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
-      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <MapPin className="h-3.5 w-3.5 text-primary" />
-        {value
-          ? `Pin placed at ${value.lat.toFixed(5)}, ${value.lng.toFixed(5)}`
-          : 'Click anywhere on the map to drop a pin, or enter coordinates below.'}
-      </p>
+      {/* Status line */}
+      <div
+        className={cn(
+          'flex items-center gap-2 rounded-lg px-3 py-2 text-xs',
+          hasPoint ? 'bg-success/5 text-success' : 'bg-muted/50 text-muted-foreground'
+        )}
+      >
+        {hasPoint ? (
+          <Check className="h-3.5 w-3.5 flex-shrink-0" />
+        ) : (
+          <Crosshair className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
+        )}
+        <span className="text-pretty">
+          {hasPoint
+            ? `Pin placed at ${value!.lat.toFixed(5)}, ${value!.lng.toFixed(5)}`
+            : 'Click anywhere on the map to drop a pin, or enter coordinates below.'}
+        </span>
+      </div>
 
       {/* Coordinate inputs (always available, even if the map fails) */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="latitude" className="text-xs font-medium text-muted-foreground">
             Latitude
@@ -369,6 +393,7 @@ export function MapPicker({
             }}
             disabled={disabled}
             aria-invalid={!!coordError}
+            className={cn(coordError && 'border-danger focus-visible:ring-danger')}
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -386,12 +411,16 @@ export function MapPicker({
             }}
             disabled={disabled}
             aria-invalid={!!coordError}
+            className={cn(coordError && 'border-danger focus-visible:ring-danger')}
           />
         </div>
       </div>
 
       {coordError ? (
-        <p className="text-xs text-danger">{coordError}</p>
+        <p role="alert" className="flex items-center gap-1 text-xs font-medium text-danger">
+          <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+          {coordError}
+        </p>
       ) : (
         <Button
           type="button"
@@ -409,7 +438,8 @@ export function MapPicker({
       {onAddressChange && (
         <div className="flex flex-col gap-1.5">
           <label htmlFor="address" className="text-xs font-medium text-muted-foreground">
-            Address / Landmark <span className="text-muted-foreground">(optional)</span>
+            Address / Landmark{' '}
+            <span className="text-muted-foreground">(optional)</span>
           </label>
           <Input
             id="address"
